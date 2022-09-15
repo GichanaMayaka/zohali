@@ -5,7 +5,7 @@ from colorama import Fore, Style
 
 from auth import Authenticator
 from transformer import Transformer
-from config import base_configs
+from config import configs
 
 
 class Parser:
@@ -18,7 +18,7 @@ class Parser:
     """
     # TODO: Convert print statements into logging statements...
     _max_id: float = 0
-    _encoding: str = base_configs.encoding
+    _encoding: str = configs.encoding
 
     @staticmethod
     def fetch_tweets() -> Any:
@@ -35,9 +35,9 @@ class Parser:
 
         tweets: Any = Parser.fetch_tweets()
         image_paths = []
-        
+
         print(Fore.LIGHTMAGENTA_EX +
-                Style.BRIGHT + "[!] Match found...")
+              Style.BRIGHT + "[!] Match found...")
 
         for tweet in tweets:
             if ("scheduled" in tweet.full_text or "planned" in tweet.full_text or "maintenance" in tweet.full_text or "interruption" in tweet.full_text) and tweet.entities.get("media"):
@@ -61,4 +61,5 @@ class Parser:
 
 
 if __name__ == "__main__":
-    Parser.run(id=None)
+    # Parser.run(id=None)
+    Authenticator.authenticate()

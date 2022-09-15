@@ -1,9 +1,10 @@
 import os
-from typing import Any, Literal, Union
+from typing import Literal, Union
 
-import pandas as pd
 import tweepy
 from colorama import Fore, Style
+
+from config import configs
 
 
 class Authenticator:
@@ -26,17 +27,16 @@ class Authenticator:
         exit(1)
     except FileExistsError as e:
         print(Fore.LIGHTMAGENTA_EX + Style.BRIGHT +
-              "[!] App Image[s] already exist... Continuing" + Style.RESET_ALL)
+              "[!] App Image[s] folder already exists... Continuing" + Style.RESET_ALL)
 
     @staticmethod
     def authenticate() -> tweepy.API:
 
         try:
-            credentials = pd.read_csv("./keys.csv", sep="|")
-            api_key = credentials.loc[0, "API Key"]
-            api_secrets = credentials.loc[0, "API Key Secret"]
-            access_token = credentials.loc[0, "Access Token"]
-            access_secret = credentials.loc[0, "Access Token Secret"]
+            api_key = configs.api_key
+            api_secrets = configs.api_key_secret
+            access_token = configs.access_token
+            access_secret = configs.access_token_secret
         except FileNotFoundError as error:
             print(Fore.RED + Style.DIM +
                   "[-] keys not found. exiting..." + Style.RESET_ALL)
