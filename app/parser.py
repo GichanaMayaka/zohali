@@ -17,8 +17,8 @@ class Parser:
     Functionalities handled herein include fetching, searching, and parsing.
     """
     # TODO: Convert print statements into logging statements...
-    _max_id: float = 0
-    _encoding: str = configs.encoding
+    _max_id: float = None
+    _encoding: str = configs.ENCODING
 
     @staticmethod
     def fetch_tweets() -> Any:
@@ -61,5 +61,5 @@ class Parser:
 
 
 if __name__ == "__main__":
-    # Parser.run(id=None)
-    Authenticator.authenticate()
+    # Authenticator.authenticate()
+    Parser.run(id=None)

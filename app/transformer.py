@@ -7,6 +7,7 @@ from PIL import Image, ImageEnhance
 
 from config import configs
 from patterns import Regexes
+from exceptions import ZohaliException
 
 
 class Transformer:
@@ -18,6 +19,8 @@ class Transformer:
     print(Fore.GREEN + Style.BRIGHT +
           "[+] Starting Transformer module..." + Style.RESET_ALL)
     try:
+        print(Fore.LIGHTCYAN_EX +
+              "[!] Attempting to create text folder..." + Style.RESET_ALL)
         os.mkdir("./image_texts/")
 
     except FileNotFoundError as e:
@@ -43,15 +46,18 @@ class Transformer:
                     image_text = pytesseract.image_to_string(
                         sharped_image, lang="swa")
 
-                    with open(f"./image_texts/{image_path.split('/')[-1].split('.')[0]}.txt", "w", encoding=configs.encoding) as file:
+                    path_to_write: str = f"./image_texts/{image_path.split('/')[-1].split('.')[0]}.txt"
+                    with open(path_to_write, "w", encoding=configs.ENCODING) as file:
                         print(Fore.LIGHTMAGENTA_EX + Style.BRIGHT +
-                              f"[!] Writing text to: ./image_texts/{image_path.split('/')[-1].split('.')[0]}.txt" + Style.RESET_ALL)
+                              f"[!] Writing text to: {path_to_write}" + Style.RESET_ALL)
                         file.write(image_text)
                         text_paths.append(
-                            f"./image_texts/{image_path.split('/')[-1].split('.')[0]}.txt")
+                            path_to_write)
         else:
             # TODO: create a custom exceptions class
-            pass
+            raise ZohaliException(
+                "No parameter supplied, or wrong parameter type supplied")
+                
         return text_paths
 
     @staticmethod
@@ -61,3 +67,7 @@ class Transformer:
             if Regexes.COUNTY:
                 pass
         return
+
+
+if __name__ == "__main__":
+    Transformer.transform("./image_texts/image_1.png")
