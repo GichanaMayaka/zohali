@@ -9,6 +9,7 @@ class base_configs(BaseSettings):
     BEARER_TOKEN: Final[str]
     ACCESS_TOKEN: Final[str]
     ACCESS_TOKEN_SECRET: Final[str]
+    SCREEN_NAME: Final[str]
 
     class Config:
         env_file = ".env"

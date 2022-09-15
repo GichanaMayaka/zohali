@@ -19,16 +19,16 @@ class Authenticator:
     try:
         os.chdir("D:/Projects/zohali/app")
         print(Fore.LIGHTCYAN_EX +
-              "[!] Attempting to create image[s] folder...")
+              "[!] Attempting to create image[s] folder.")
         os.mkdir("./images/")
 
     except FileNotFoundError as e:
         print(Fore.LIGHTRED_EX + Style.BRIGHT +
-              "[-] Cannot create image[s] folders... Exiting" + Style.RESET_ALL)
+              "[-] Cannot create image[s] folders. Exiting" + Style.RESET_ALL)
         exit(1)
     except FileExistsError as e:
         print(Fore.LIGHTMAGENTA_EX + Style.BRIGHT +
-              "[!] App Image[s] folder already exists!... Continuing" + Style.RESET_ALL)
+              "[!] App Image[s] folder already exists! Continuing" + Style.RESET_ALL)
 
     @staticmethod
     def authenticate() -> tweepy.API:
@@ -41,7 +41,7 @@ class Authenticator:
 
             api.verify_credentials()
             print(Fore.LIGHTBLUE_EX + Style.BRIGHT +
-                  '[+] Authenticated successfully...' + Style.RESET_ALL)
+                  '[+] Authenticated successfully.' + Style.RESET_ALL)
             Authenticator.__status = True
             return api
 

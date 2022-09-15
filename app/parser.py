@@ -25,7 +25,7 @@ class Parser:
         api = Authenticator.authenticate()
 
         if Authenticator.authentication_status:
-            tweets = api.user_timeline(max_id=Parser._max_id, screen_name="KenyaPower_Care", tweet_mode="extended",
+            tweets = api.user_timeline(max_id=Parser._max_id, screen_name=configs.SCREEN_NAME, tweet_mode="extended",
                                        count=900, exclude_replies=True, include_rts=False)
 
         return tweets

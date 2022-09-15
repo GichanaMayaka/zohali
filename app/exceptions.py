@@ -1,0 +1,2 @@
+class ZohaliException(Exception):
+    pass

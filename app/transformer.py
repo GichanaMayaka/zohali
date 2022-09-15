@@ -17,19 +17,19 @@ class Transformer:
     """
     # Static initialiser block, sort of... this isn't Java afterall
     print(Fore.GREEN + Style.BRIGHT +
-          "[+] Starting Transformer module..." + Style.RESET_ALL)
+          "[+] Starting Transformer module." + Style.RESET_ALL)
     try:
         print(Fore.LIGHTCYAN_EX +
-              "[!] Attempting to create text folder..." + Style.RESET_ALL)
+              "[!] Attempting to create text folder" + Style.RESET_ALL)
         os.mkdir("./image_texts/")
 
     except FileNotFoundError as e:
         print(Fore.LIGHTMAGENTA_EX + Style.BRIGHT +
-              "[!] Cannot create text folder... Exiting" + Style.RESET_ALL)
+              "[!] Cannot create text folder. Exiting" + Style.RESET_ALL)
         exit(1)
     except FileExistsError as e:
         print(Fore.LIGHTMAGENTA_EX + Style.BRIGHT +
-              "[!] Text folder already exists... Continuing" + Style.RESET_ALL)
+              "[!] Text folder already exists. Continuing" + Style.RESET_ALL)
 
     @staticmethod
     def transform(image_paths: List[str]) -> List[str]:
@@ -57,7 +57,7 @@ class Transformer:
             # TODO: create a custom exceptions class
             raise ZohaliException(
                 "No parameter supplied, or wrong parameter type supplied")
-                
+
         return text_paths
 
     @staticmethod
