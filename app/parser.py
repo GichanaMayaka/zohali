@@ -54,7 +54,7 @@ class Parser:
         return image_paths
 
     @staticmethod
-    def run(id: float = Optional[float]) -> NoReturn:
+    def run(id: Optional[float] = None) -> NoReturn:
         """Parser class entry point"""
         Parser.__max_id: float = id
         Transformer.transform(Parser.parse_tweets())
