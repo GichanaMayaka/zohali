@@ -1,4 +1,4 @@
-from typing import Any, List, NoReturn
+from typing import Any, List, NoReturn, Optional
 
 import requests
 from colorama import Fore, Style
@@ -54,7 +54,7 @@ class Parser:
         return image_paths
 
     @staticmethod
-    def run(id: float = None) -> NoReturn:
+    def run(id: float = Optional[float]) -> NoReturn:
         """Parser class entry point"""
         Parser.__max_id: float = id
         Transformer.transform(Parser.parse_tweets())

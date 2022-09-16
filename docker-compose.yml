@@ -1,0 +1,9 @@
+version: "3"
+services:
+  zohali:
+    build: .
+    command: python ./app/parser.py
+    volumes:
+      - ./:/zohali:ro
+    env_file:
+      - .env
