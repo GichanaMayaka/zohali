@@ -17,16 +17,16 @@ class Parser:
     Functionalities handled herein include fetching, searching, and parsing.
     """
     # TODO: Convert print statements into logging statements...
-    _max_id: float = None
-    _encoding: str = configs.ENCODING
+    __max_id: float = None
+    __encoding: str = configs.ENCODING
 
     @staticmethod
     def fetch_tweets() -> Any:
         api = Authenticator.authenticate()
 
         if Authenticator.authentication_status:
-            tweets = api.user_timeline(max_id=Parser._max_id, screen_name=configs.SCREEN_NAME, tweet_mode="extended",
-                                       count=900, exclude_replies=True, include_rts=False)
+            tweets = api.user_timeline(max_id=Parser.__max_id, screen_name=configs.SCREEN_NAME, tweet_mode=configs.TWEET_MODE,
+                                       count=configs.TWEETS_COUNT, exclude_replies=configs.EXCLUDE_REPLIES, include_rts=configs.INCLUDE_RETWEETS)
 
         return tweets
 
@@ -56,7 +56,7 @@ class Parser:
     @staticmethod
     def run(id: float = None) -> NoReturn:
         """Parser class entry point"""
-        Parser._max_id: float = id
+        Parser.__max_id: float = id
         Transformer.transform(Parser.parse_tweets())
 
 

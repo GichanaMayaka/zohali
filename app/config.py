@@ -10,6 +10,10 @@ class base_configs(BaseSettings):
     ACCESS_TOKEN: Final[str]
     ACCESS_TOKEN_SECRET: Final[str]
     SCREEN_NAME: Final[str]
+    TWEET_MODE: Final[str]
+    TWEETS_COUNT: Final[int]
+    EXCLUDE_REPLIES: Final[bool]
+    INCLUDE_RETWEETS: Final[bool]
 
     class Config:
         env_file = ".env"

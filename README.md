@@ -24,3 +24,7 @@ Future developments include intergrating with a Twitter Bot.
     ACCESS_TOKEN:
     ACCESS_TOKEN_SECRET:
     SCREEN_NAME:
+    TWEET_MODE:
+    TWEETS_COUNT:
+    EXCLUDE_REPLIES:
+    INCLUDE_RETWEETS:
