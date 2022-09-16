@@ -14,6 +14,7 @@ class base_configs(BaseSettings):
     TWEETS_COUNT: Final[int]
     EXCLUDE_REPLIES: Final[bool]
     INCLUDE_RETWEETS: Final[bool]
+    TIMEOUT: Final[int] # twitter api timeout in minutes
 
     class Config:
         env_file = ".env"
@@ -28,5 +29,5 @@ class test_configs(base_configs):
 
 
 configs = base_configs()
-production = prod_configs()
 test = test_configs()
+production = prod_configs()

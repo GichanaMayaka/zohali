@@ -4,6 +4,13 @@ Information extracted includes the Region, County, Area, Specific places, time a
 
 Future developments include intergrating with a Twitter Bot.
 
+## Getting Started
+Quickly run the project using [docker](https://www.docker.com/) and
+[docker-compose](https://docs.docker.com/compose/):
+```bash
+    $ docker-compose up -d
+```
+
 ### Directory Structure:
     - app/
         __init__.py

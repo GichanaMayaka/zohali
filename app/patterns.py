@@ -6,7 +6,7 @@ import regex as re
 
 class Regexes:
     """
-    Zohali constant Regexes exporting class
+    constant Regexes exporting class
     """
     TIME: Final[Pattern[AnyStr]] = re.compile(pattern=r"(?<=time.+?)(\d{1,2}\.\d{2}\s+?(\S)*)(-*\s*|—*\s*)*(\d{1,2}\.\d{2}\s+?(\S)*)", flags=re.IGNORECASE)
     DATE: Final[Pattern[AnyStr]] = re.compile(pattern=r"\d{1,2}\.+?\d{1,2}\.+?\d{2,4}")

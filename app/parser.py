@@ -1,11 +1,13 @@
 from typing import Any, List, NoReturn, Optional
 
+import time
 import requests
 from colorama import Fore, Style
 
 from auth import Authenticator
 from transformer import Transformer
 from config import configs
+from exceptions import ZohaliException
 
 
 class Parser:
@@ -20,33 +22,39 @@ class Parser:
     __max_id: float = None
     __encoding: str = configs.ENCODING
 
+    # Authentication handlers
+    authenticator = Authenticator()
+    api = authenticator.authenticate()
+
     @staticmethod
     def fetch_tweets() -> Any:
-        api = Authenticator.authenticate()
 
-        if Authenticator.authentication_status:
-            tweets = api.user_timeline(max_id=Parser.__max_id, screen_name=configs.SCREEN_NAME, tweet_mode=configs.TWEET_MODE,
-                                       count=configs.TWEETS_COUNT, exclude_replies=configs.EXCLUDE_REPLIES, include_rts=configs.INCLUDE_RETWEETS)
+        if Parser.authenticator.authentication_status:
+            tweets = Parser.api.user_timeline(max_id=Parser.__max_id, screen_name=configs.SCREEN_NAME, tweet_mode=configs.TWEET_MODE,
+                                              count=configs.TWEETS_COUNT, exclude_replies=configs.EXCLUDE_REPLIES, include_rts=configs.INCLUDE_RETWEETS)
 
+        else:
+            # TODO: add a handler
+            pass
         return tweets
 
     @staticmethod
     def parse_tweets() -> List[str]:
 
         tweets: Any = Parser.fetch_tweets()
-        image_paths = []
+        image_paths: list = []
 
-        print(Fore.LIGHTMAGENTA_EX +
-              Style.BRIGHT + "[!] Match found...")
+        print(Fore.LIGHTBLUE_EX + "[!] Match found..." + Style.RESET_ALL)
 
         for tweet in tweets:
             if ("scheduled" in tweet.full_text or "planned" in tweet.full_text or "maintenance" in tweet.full_text or "interruption" in tweet.full_text) and tweet.entities.get("media"):
                 for media in tweet.entities.get("media"):
-                    image_data = requests.get(media.get("media_url")).content
+                    image_data: bytes = requests.get(
+                        media.get("media_url")).content
 
                     with open(f"./images/image_{tweet.created_at.strftime('%Y%m%d_%H%M%S')}.png", "wb") as img:
-                        print(Fore.LIGHTMAGENTA_EX + Style.BRIGHT +
-                              f"[!] Writing image to ./images/image_{tweet.created_at.strftime('%Y%m%d_%H%M%S')}.png to disk..." + Style.RESET_ALL)
+                        print(Fore.LIGHTBLUE_EX +
+                              f"[!] Writing image to ./images/image_{tweet.created_at.strftime('%Y%m%d_%H%M%S')}.png" + Style.RESET_ALL)
                         image_paths.append(
                             f"./images/image_{tweet.created_at.strftime('%Y%m%d_%H%M%S')}.png")
                         img.write(image_data)
@@ -57,9 +65,23 @@ class Parser:
     def run(id: Optional[float] = None) -> NoReturn:
         """Parser class entry point"""
         Parser.__max_id: float = id
-        Transformer.transform(Parser.parse_tweets())
+
+        try:
+            Transformer.transform(Parser.parse_tweets())
+
+        except ZohaliException:
+            print(Fore.LIGHTMAGENTA_EX + "[-] Wrong parameter to transform method" + Style.RESET_ALL)
+            exit(-1)
 
 
 if __name__ == "__main__":
-    # Authenticator.authenticate()
-    Parser.run(id=None)
+    while True:
+
+        try:
+            time.sleep(configs.TIMEOUT*60)
+            # Authenticator().authenticate()
+            Parser.run(id)
+
+        except KeyboardInterrupt:
+            print(Fore.LIGHTMAGENTA_EX + "[-] Closing." + Style.RESET_ALL)
+            exit(-1)

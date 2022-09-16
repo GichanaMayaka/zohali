@@ -3,6 +3,7 @@ services:
   zohali:
     build: .
     command: python ./app/parser.py
+    container_name: zohali
     volumes:
       - ./:/zohali:ro
     env_file:
