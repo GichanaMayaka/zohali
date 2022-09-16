@@ -35,3 +35,4 @@ Quickly run the project using [docker](https://www.docker.com/) and
     TWEETS_COUNT:
     EXCLUDE_REPLIES:
     INCLUDE_RETWEETS:
+    TIMEOUT:
