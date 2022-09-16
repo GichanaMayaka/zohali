@@ -56,7 +56,8 @@ class Transformer:
         else:
             # TODO: create a custom exceptions class
             raise ZohaliException(
-                "No parameter supplied, or wrong parameter type supplied")
+                "No parameter supplied, or wrong parameter type supplied"
+            )
 
         return text_paths
 
@@ -67,7 +68,3 @@ class Transformer:
             if Regexes.COUNTY:
                 pass
         return
-
-
-if __name__ == "__main__":
-    Transformer.transform("./image_texts/image_1.png")
