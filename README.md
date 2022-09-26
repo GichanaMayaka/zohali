@@ -27,15 +27,15 @@ Quickly run the project using [docker](https://www.docker.com/) and
 ### Configuration
 Default configurations as shown below. Adjust accordingly
 
-    ENCODING:
+    ENCODING: = "utf-8"
     API_KEY:
     API_KEY_SECRET:
     BEARER_TOKEN:
     ACCESS_TOKEN:
     ACCESS_TOKEN_SECRET:
-    SCREEN_NAME:
-    TWEET_MODE:
-    TWEETS_COUNT:
-    EXCLUDE_REPLIES:
-    INCLUDE_RETWEETS:
-    TIMEOUT:
+    SCREEN_NAME: = "KenyaPower_Care"
+    TWEET_MODE: = "extended"
+    TWEETS_COUNT: = 900
+    EXCLUDE_REPLIES: = True
+    INCLUDE_RETWEETS: = False
+    TIMEOUT: = 15
