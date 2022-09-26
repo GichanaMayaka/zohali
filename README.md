@@ -26,6 +26,7 @@ Quickly run the project using [docker](https://www.docker.com/) and
 
 ### Configuration
 Default configurations as shown below. Adjust accordingly
+
     ENCODING:
     API_KEY:
     API_KEY_SECRET:
