@@ -3,18 +3,18 @@ from pydantic import BaseSettings
 
 
 class base_configs(BaseSettings):
-    ENCODING: Final[str]
+    ENCODING: Final[str] = "utf-8"
     API_KEY: Final[str]
     API_KEY_SECRET: Final[str]
     BEARER_TOKEN: Final[str]
     ACCESS_TOKEN: Final[str]
     ACCESS_TOKEN_SECRET: Final[str]
-    SCREEN_NAME: Final[str]
-    TWEET_MODE: Final[str]
-    TWEETS_COUNT: Final[int]
-    EXCLUDE_REPLIES: Final[bool]
-    INCLUDE_RETWEETS: Final[bool]
-    TIMEOUT: Final[int] # twitter api timeout in minutes
+    SCREEN_NAME: Final[str] = "KenyaPower_Care"
+    TWEET_MODE: Final[str] = "extended"
+    TWEETS_COUNT: Final[int] = 900
+    EXCLUDE_REPLIES: Final[bool] = True
+    INCLUDE_RETWEETS: Final[bool] = False
+    TIMEOUT: Final[int] = 15 # twitter api timeout in minutes
 
     class Config:
         env_file = ".env"

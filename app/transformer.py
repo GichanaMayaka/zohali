@@ -1,13 +1,15 @@
 import os
+from pprint import pprint
 from typing import List, NoReturn
 
+import pandas as pd
 import pytesseract
 from colorama import Fore, Style
 from PIL import Image, ImageEnhance
 
 from config import configs
-from patterns import Regexes
 from exceptions import ZohaliException
+from utils import Functions
 
 
 class Transformer:
@@ -22,6 +24,7 @@ class Transformer:
         print(Fore.LIGHTCYAN_EX +
               "[!] Attempting to create text folder" + Style.RESET_ALL)
         os.mkdir("./image_texts/")
+        print(Fore.LIGHTCYAN_EX + "[!] Created" + Style.RESET_ALL)
 
     except FileNotFoundError as e:
         print(Fore.LIGHTMAGENTA_EX + Style.BRIGHT +
@@ -31,8 +34,8 @@ class Transformer:
         print(Fore.LIGHTMAGENTA_EX + Style.BRIGHT +
               "[!] Text folder already exists. Continuing" + Style.RESET_ALL)
 
-    @staticmethod
-    def transform(image_paths: List[str]) -> List[str]:
+    @classmethod
+    def transform(cls, image_paths: List[str]) -> List[str]:
         text_paths: list = []
 
         if type(image_paths) == list and len(image_paths) > 0:
@@ -43,28 +46,39 @@ class Transformer:
                     image = enhancer.enhance(1.5)
                     sharper = ImageEnhance.Sharpness(image=image)
                     sharped_image = sharper.enhance(2)
-                    image_text = pytesseract.image_to_string(
-                        sharped_image, lang="swa")
+                    image_text = pytesseract.image_to_string(sharped_image)
 
                     path_to_write: str = f"./image_texts/{image_path.split('/')[-1].split('.')[0]}.txt"
                     with open(path_to_write, "w", encoding=configs.ENCODING) as file:
-                        print(Fore.LIGHTMAGENTA_EX + Style.BRIGHT +
-                              f"[!] Writing text to: {path_to_write}" + Style.RESET_ALL)
+                        print(
+                            Fore.LIGHTBLUE_EX + f"[!] Writing text to: {path_to_write}" + Style.RESET_ALL)
                         file.write(image_text)
                         text_paths.append(
                             path_to_write)
         else:
             # TODO: create a custom exceptions class
             raise ZohaliException(
-                "No parameter supplied, or wrong parameter type supplied"
+                "No parameter supplied or wrong parameter type supplied to method Transformer.transform()"
             )
 
         return text_paths
 
-    @staticmethod
-    def consumer(text_paths: List[str]) -> NoReturn:
+    @classmethod
+    def consumer(cls, text_paths: List[str]) -> NoReturn:
+
+        data = pd.DataFrame(
+            columns=["region", "county", "area", "date", "time", "places"]
+        )
 
         if type(text_paths) == list and len(text_paths) > 0:
-            if Regexes.COUNTY:
-                pass
+            for text in text_paths:
+                data = pd.concat(
+                    objs=[data, Functions.extract_text(text)], axis=0
+                )
+        
+        pprint(data)
         return
+
+
+if __name__ == "__main__":
+    Transformer.consumer(Transformer.transform(["./app/images/image_20220914_173637.png"]))

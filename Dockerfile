@@ -6,7 +6,7 @@ COPY requirements.txt ./
 
 RUN apt-get -y update && apt-get install -y tesseract-ocr && apt install -y libtesseract-dev
 
-ENV TESSDATA_PREFIX=/usr/share/tesseract-ocr/4.00/tessdata
+ENV TESSDATA_PREFIX=/usr/share/tesseract-ocr/
 
 RUN pip install -r requirements.txt
 

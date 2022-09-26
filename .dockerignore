@@ -1,0 +1,8 @@
+# app
+app/images
+app/image_texts
+*.geojson
+
+# Python
+venv
+app/__pycache__

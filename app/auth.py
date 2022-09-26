@@ -39,7 +39,7 @@ class Authenticator:
             auth.set_access_token(configs.ACCESS_TOKEN,
                                   configs.ACCESS_TOKEN_SECRET)
 
-            api = tweepy.API(auth)
+            api = tweepy.API(auth, wait_on_rate_limit=True)
 
             api.verify_credentials()
             print(Fore.LIGHTBLUE_EX + Style.BRIGHT +

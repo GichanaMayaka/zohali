@@ -26,8 +26,8 @@ class Parser:
     authenticator = Authenticator()
     api = authenticator.authenticate()
 
-    @staticmethod
-    def fetch_tweets() -> Any:
+    @classmethod
+    def fetch_tweets(cls) -> Any:
 
         if Parser.authenticator.authentication_status:
             tweets = Parser.api.user_timeline(max_id=Parser.__max_id, screen_name=configs.SCREEN_NAME, tweet_mode=configs.TWEET_MODE,
@@ -38,16 +38,18 @@ class Parser:
             pass
         return tweets
 
-    @staticmethod
-    def parse_tweets() -> List[str]:
+    @classmethod
+    def parse_tweets(cls) -> List[str]:
 
         tweets: Any = Parser.fetch_tweets()
         image_paths: list = []
-
-        print(Fore.LIGHTBLUE_EX + "[!] Match found..." + Style.RESET_ALL)
+        # max_tweet_ids: list = []
 
         for tweet in tweets:
             if ("scheduled" in tweet.full_text or "planned" in tweet.full_text or "maintenance" in tweet.full_text or "interruption" in tweet.full_text) and tweet.entities.get("media"):
+                print(Fore.LIGHTBLUE_EX +
+                      "[!] Match found..." + Style.RESET_ALL)
+                # max_tweet_ids.append(tweet.id)
                 for media in tweet.entities.get("media"):
                     image_data: bytes = requests.get(
                         media.get("media_url")).content
@@ -61,8 +63,8 @@ class Parser:
 
         return image_paths
 
-    @staticmethod
-    def run(id: Optional[float] = None) -> NoReturn:
+    @classmethod
+    def run(cls, id: Optional[float] = None) -> NoReturn:
         """Parser class entry point"""
         Parser.__max_id: float = id
 
@@ -70,7 +72,8 @@ class Parser:
             Transformer.transform(Parser.parse_tweets())
 
         except ZohaliException:
-            print(Fore.LIGHTMAGENTA_EX + "[-] Wrong parameter to transform method" + Style.RESET_ALL)
+            print(Fore.LIGHTMAGENTA_EX +
+                  "[-] Wrong parameter to transform method" + Style.RESET_ALL)
             exit(-1)
 
 
@@ -78,9 +81,8 @@ if __name__ == "__main__":
     while True:
 
         try:
-            time.sleep(configs.TIMEOUT*60)
-            # Authenticator().authenticate()
-            Parser.run(id)
+            time.sleep(configs.TIMEOUT)
+            Parser.run(id=None)
 
         except KeyboardInterrupt:
             print(Fore.LIGHTMAGENTA_EX + "[-] Closing." + Style.RESET_ALL)
