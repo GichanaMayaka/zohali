@@ -1,4 +1,5 @@
 import os
+import platform
 from typing import Literal, Union
 
 import tweepy
@@ -17,8 +18,12 @@ class Authenticator:
     print("\n" + Fore.GREEN + Style.BRIGHT +
           "[+] Initialising Zohali..." + Style.RESET_ALL)
     try:
-        # os.chdir("/zohali/app")
-        os.chdir("D:/Projects/zohali/app")
+        if platform.platform().startswith("Windows"):
+            os.chdir("D:/Projects/zohali/app")
+
+        elif platform.platform().startswith("Linux"):
+            os.chdir("/zohali/app")
+            
         print(Fore.LIGHTCYAN_EX +
               "[!] Attempting to create image[s] folder.")
         os.mkdir("./images/")
@@ -52,7 +57,7 @@ class Authenticator:
                   f'[-] Authentication failed with exception:\n\t {e}...' + Fore.RED + Style.DIM + "\nexiting" + Style.RESET_ALL)
 
     @property
-    def authentication_status(cls) -> Union[Literal[True], Literal[False]]:
+    def authentication_status(self) -> Union[Literal[True], Literal[False]]:
         return Authenticator.__status
 
 
