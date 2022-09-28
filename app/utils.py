@@ -1,14 +1,19 @@
 from collections import OrderedDict
-from typing import Any
+from typing import Any, Optional
 
 import pandas as pd
 
-from config import configs
-from patterns import Patterns
+from .config import configs
+from .database import engine
+from .patterns import Patterns
 
 
 class Functions:
-    """Utility functions applied to the dataframe for various actions including cleaning, extracting text, imputing null rows, and more etc"""
+    """
+    Utility functions applied to the dataframe for various actions
+    including cleaning, extracting text, imputing null rows,
+    and more etc. This class is not meant to be subclassed
+    """
 
     @staticmethod
     def extract_text(path: str) -> pd.DataFrame:
@@ -47,17 +52,23 @@ class Functions:
         data = frame.apply(Functions.fill_dataframe, axis=0)
         data.date = pd.to_datetime(data.date, format="%d.%m.%Y")
         data = data[data.time.notnull()].reset_index(drop=True)
-        data.time = data.time.str.replace("—", "-")
-        data.time = data.time.str.replace("a.m", "a.m.", regex=False)
+
         data.time = data.apply(Functions.time_cleaner, axis=1)
-        data.county = data.apply(Functions.county_cleaner, axis=1)
-        data.region = data.apply(Functions.region_cleaner, axis=1)
         data.time = data.time.str.lstrip()
+        data.time = data.time.str.replace("—", "-")
+        data.time = data.time.str.replace("--", "-")
+        data.time = data.time.str.replace("a.m", "a.m.", regex=False)
+
+        if "county" in data.columns:
+            data.county = data.apply(Functions.county_cleaner, axis=1)
+
+        if "region" in data.columns:
+            data.region = data.apply(Functions.region_cleaner, axis=1)
 
         return data
 
     @staticmethod
-    def match_patterns(string: str) -> Any:
+    def match_patterns(string: str) -> tuple[Any, Any, Any, Any, Any, Any]:
         region = Patterns.REGIONS.finditer(string)
         county = Patterns.COUNTY.finditer(string)
         place = Patterns.PLACES.finditer(string)
@@ -104,3 +115,7 @@ class Functions:
             return df.region.replace("of", "Parts of")
         else:
             return df.region
+
+    @staticmethod
+    def save(df: pd.DataFrame) -> Optional[int]:
+        return df.to_sql(name="maintenance_schedule", con=engine, if_exists="replace", index=False)

@@ -5,7 +5,7 @@ from typing import Literal, Union
 import tweepy
 from colorama import Fore, Style
 
-from config import configs
+from .config import configs
 
 
 class Authenticator:
@@ -23,7 +23,7 @@ class Authenticator:
 
         elif platform.platform().startswith("Linux"):
             os.chdir("/zohali/app")
-            
+
         print(Fore.LIGHTCYAN_EX +
               "[!] Attempting to create image[s] folder.")
         os.mkdir("./images/")
@@ -47,6 +47,7 @@ class Authenticator:
             api = tweepy.API(auth, wait_on_rate_limit=True)
 
             api.verify_credentials()
+
             print(Fore.LIGHTBLUE_EX + Style.BRIGHT +
                   '[+] Authenticated successfully.' + Style.RESET_ALL)
             Authenticator.__status = True

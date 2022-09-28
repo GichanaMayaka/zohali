@@ -14,7 +14,14 @@ class base_configs(BaseSettings):
     TWEETS_COUNT: Final[int] = 900
     EXCLUDE_REPLIES: Final[bool] = True
     INCLUDE_RETWEETS: Final[bool] = False
-    TIMEOUT: Final[int] = 15 # twitter api timeout in minutes
+    TIMEOUT: Final[int] = 15  # twitter api timeout in minutes
+
+    # Database connection parameters
+    POSTGRES_HOSTNAME: Final[str]
+    POSTGRES_USER: Final[str]
+    POSTGRES_PASSWORD: Final[str]
+    POSTGRES_PORT: Final[int]
+    POSTGRES_DATABASE_NAME: Final[str]
 
     class Config:
         env_file = ".env"

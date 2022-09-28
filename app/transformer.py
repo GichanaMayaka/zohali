@@ -1,15 +1,14 @@
 import os
-from pprint import pprint
-from typing import List, NoReturn
+from typing import List
 
 import pandas as pd
 import pytesseract
 from colorama import Fore, Style
 from PIL import Image, ImageEnhance
 
-from config import configs
-from exceptions import ZohaliException
-from utils import Functions
+from .config import configs
+from .exceptions import ZohaliException
+from .utils import Functions
 
 
 class Transformer:
@@ -38,7 +37,7 @@ class Transformer:
     def transform(cls, image_paths: List[str]) -> List[str]:
         text_paths: list = []
 
-        if type(image_paths) == list and len(image_paths) > 0:
+        if isinstance(image_paths, list) and len(image_paths) > 0:
             for image_path in image_paths:
                 if image_path.endswith(".png"):
                     img = Image.open(image_path).convert("L")
@@ -46,7 +45,7 @@ class Transformer:
                     image = enhancer.enhance(1.5)
                     sharper = ImageEnhance.Sharpness(image=image)
                     sharped_image = sharper.enhance(2)
-                    image_text = pytesseract.image_to_string(sharped_image)
+                    image_text = pytesseract.image_to_string(sharped_image, lang="swa")
 
                     path_to_write: str = f"./image_texts/{image_path.split('/')[-1].split('.')[0]}.txt"
                     with open(path_to_write, "w", encoding=configs.ENCODING) as file:
@@ -64,21 +63,20 @@ class Transformer:
         return text_paths
 
     @classmethod
-    def consumer(cls, text_paths: List[str]) -> NoReturn:
+    def consumer(cls, text_paths: List[str]) -> None:
 
         data = pd.DataFrame(
             columns=["region", "county", "area", "date", "time", "places"]
         )
 
-        if type(text_paths) == list and len(text_paths) > 0:
+        if isinstance(text_paths, list) and len(text_paths) > 0:
             for text in text_paths:
                 data = pd.concat(
                     objs=[data, Functions.extract_text(text)], axis=0
                 )
         
-        pprint(data)
         return
 
 
 if __name__ == "__main__":
-    Transformer.consumer(Transformer.transform(["./app/images/image_20220914_173637.png"]))
+    Transformer.consumer(Transformer.transform([""]))
