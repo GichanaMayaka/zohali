@@ -12,17 +12,28 @@ Quickly run the project using [docker](https://www.docker.com/) and
 ```
 
 ### Directory Structure:
-    - app/
-        __init__.py
-        auth.py
-        config.py
-        exceptions.py
-        parser.py
-        patterns.py
-        transformer.py
-        utils.py
-        - images/
-        - image_texts/
+
+    -/zohali/
+        .dockerignore
+        .gitignore
+        docker-compose.yml
+        Dockerfile
+        init.sh
+        README.md
+        requirements.txt
+        serve.py
+        -/app/
+            __init__.py
+            auth.py
+            config.py
+            database.py
+            exceptions.py
+            parser.py
+            patterns.py
+            transformer.py
+            utils.py
+            -/images/
+            -/image_texts/
 
 ### Configuration
 Default configurations as shown below. Adjust accordingly
