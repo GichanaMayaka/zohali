@@ -45,7 +45,7 @@ class Transformer:
                     image = enhancer.enhance(1.5)
                     sharper = ImageEnhance.Sharpness(image=image)
                     sharped_image = sharper.enhance(2)
-                    image_text = pytesseract.image_to_string(sharped_image, lang="swa")
+                    image_text = pytesseract.image_to_string(sharped_image)
 
                     path_to_write: str = f"./image_texts/{image_path.split('/')[-1].split('.')[0]}.txt"
                     with open(path_to_write, "w", encoding=configs.ENCODING) as file:
@@ -63,7 +63,8 @@ class Transformer:
         return text_paths
 
     @classmethod
-    def consumer(cls, text_paths: List[str]) -> None:
+    def tablify(cls, text_paths: List[str]) -> pd.DataFrame:
+        """Build a dataframe from the data parsed from the tweets"""
 
         data = pd.DataFrame(
             columns=["region", "county", "area", "date", "time", "places"]
@@ -74,9 +75,9 @@ class Transformer:
                 data = pd.concat(
                     objs=[data, Functions.extract_text(text)], axis=0
                 )
-        
-        return
+
+        return data
 
 
 if __name__ == "__main__":
-    Transformer.consumer(Transformer.transform([""]))
+    Transformer.tablify(Transformer.transform([""]))

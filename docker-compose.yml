@@ -2,7 +2,7 @@ version: "3"
 services:
   app:
     build: .
-    command: python ./app/parser.py
+    # command: python ./serve.py
     container_name: app
     volumes:
       - ./:/zohali:rw
@@ -12,13 +12,15 @@ services:
       - zohali-db
 
   zohali-db:
-    container_name: zohali-db
     image: postgres:latest
+    container_name: zohali-db
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
     restart: always
     ports:
       - 5432:5432
     env_file:
       - .env
 
-# volumes:
-#   postgres-db:
+  redis:
+    image: redis:latest

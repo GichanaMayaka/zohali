@@ -1,4 +1,5 @@
 import os
+import sys
 import platform
 from typing import Literal, Union
 
@@ -32,7 +33,7 @@ class Authenticator:
     except FileNotFoundError as e:
         print(Fore.LIGHTRED_EX + Style.BRIGHT +
               "[-] Cannot create image[s] folders. Exiting" + Style.RESET_ALL)
-        exit(1)
+        sys.exit(1)
 
     except FileExistsError as e:
         print(Fore.LIGHTMAGENTA_EX + Style.BRIGHT +
@@ -58,7 +59,7 @@ class Authenticator:
                   f'[-] Authentication failed with exception:\n\t {e}...' + Fore.RED + Style.DIM + "\nexiting" + Style.RESET_ALL)
 
     @property
-    def authentication_status(self) -> Union[Literal[True], Literal[False]]:
+    def authentication_status(self) -> bool:
         return Authenticator.__status
 
 

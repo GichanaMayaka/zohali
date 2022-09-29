@@ -11,8 +11,8 @@ from .patterns import Patterns
 class Functions:
     """
     Utility functions applied to the dataframe for various actions
-    including cleaning, extracting text, imputing null rows,
-    and more etc. This class is not meant to be subclassed
+    including cleaning, extracting text, imputing null rows, writing to database, 
+    and more. This class is not meant to be subclassed
     """
 
     @staticmethod
@@ -39,7 +39,7 @@ class Functions:
         for match in area:
             info[match.span()] = {"area": match.captures()[0]}
         for match in place:
-            info[match.span()] = {"place": match.captures()[0]}
+            info[match.span()] = {"places": match.captures()[0]}
         for match in date:
             info[match.span()] = {"date": match.captures()[0]}
         for match in time:
@@ -50,14 +50,17 @@ class Functions:
         frame = pd.DataFrame.from_dict(ordered_info.values())
 
         data = frame.apply(Functions.fill_dataframe, axis=0)
-        data.date = pd.to_datetime(data.date, format="%d.%m.%Y")
-        data = data[data.time.notnull()].reset_index(drop=True)
+        
+        if "date" in data.columns:
+            data.date = pd.to_datetime(data.date, format="%d.%m.%Y")
 
-        data.time = data.apply(Functions.time_cleaner, axis=1)
-        data.time = data.time.str.lstrip()
-        data.time = data.time.str.replace("—", "-")
-        data.time = data.time.str.replace("--", "-")
-        data.time = data.time.str.replace("a.m", "a.m.", regex=False)
+        if "time" in data.columns:
+            data = data[data.time.notnull()].reset_index(drop=True)
+            data.time = data.apply(Functions.time_cleaner, axis=1)
+            data.time = data.time.str.lstrip()
+            data.time = data.time.str.replace("—", "-")
+            data.time = data.time.str.replace("--", "-")
+            data.time = data.time.str.replace("a.m", "a.m.", regex=False)
 
         if "county" in data.columns:
             data.county = data.apply(Functions.county_cleaner, axis=1)
@@ -118,4 +121,5 @@ class Functions:
 
     @staticmethod
     def save(df: pd.DataFrame) -> Optional[int]:
-        return df.to_sql(name="maintenance_schedule", con=engine, if_exists="replace", index=False)
+        """Write the dataframe to database appending at the end"""
+        return df.to_sql(name="maintenance_schedule", con=engine, if_exists="append", index=False)

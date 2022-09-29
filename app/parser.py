@@ -1,6 +1,7 @@
 from typing import Any, List, Optional
 
 import os
+import sys
 import time
 import requests
 from colorama import Fore, Style
@@ -28,10 +29,10 @@ class Parser:
     api = authenticator.authenticate()
 
     @classmethod
-    def fetch_tweets(cls) -> Any:
+    def fetch_tweets(cls, id: Optional[float] = None) -> Any:
 
         if Parser.authenticator.authentication_status:
-            tweets: list = Parser.api.user_timeline(max_id=Parser.__max_id, screen_name=configs.SCREEN_NAME, tweet_mode=configs.TWEET_MODE,
+            tweets: list = Parser.api.user_timeline(max_id=id, screen_name=configs.SCREEN_NAME, tweet_mode=configs.TWEET_MODE,
                                                     count=configs.TWEETS_COUNT, exclude_replies=configs.EXCLUDE_REPLIES, include_rts=configs.INCLUDE_RETWEETS)
 
         else:
@@ -55,6 +56,7 @@ class Parser:
                         media.get("media_url"), timeout=30
                     ).content
 
+                    # TODO: Add a random salt to image
                     path_to_write = f"./images/image_{tweet.created_at.strftime('%Y%m%d_%H%M%S')}_{tweet.id}.png"
                     with open(path_to_write, "wb") as img:
                         os.chmod(path_to_write, 0o0755)
@@ -70,17 +72,17 @@ class Parser:
     @classmethod
     def run(cls, id: Optional[float] = None) -> None:
         """Parser class entry point"""
-        Parser.__max_id: float = id
+        # Parser.__max_id: float = id
 
-        try:
-            tweets = Parser.fetch_tweets()
-            Transformer.transform(Parser.parse_tweets(tweets=tweets))
+        # try:
+        #     tweets = Parser.fetch_tweets()
+        #     Transformer.transform(Parser.parse_tweets(tweets=tweets))
 
-        except ZohaliException:
-            print(Fore.LIGHTMAGENTA_EX +
-                  "[-] Wrong parameter to transform method" + Style.RESET_ALL)
-            exit(-1)
-
+        # except ZohaliException:
+        #     print(Fore.LIGHTMAGENTA_EX +
+        #           "[-] Wrong parameter to transform method" + Style.RESET_ALL)
+        #     exit(-1)
+        pass
 
 if __name__ == "__main__":
     while True:
@@ -91,4 +93,4 @@ if __name__ == "__main__":
 
         except KeyboardInterrupt:
             print(Fore.LIGHTMAGENTA_EX + "[-] Closing." + Style.RESET_ALL)
-            exit(-1)
+            sys.exit(-1)
