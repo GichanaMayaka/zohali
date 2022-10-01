@@ -1,7 +1,6 @@
 import os
 import sys
 import platform
-from typing import Literal, Union
 
 import tweepy
 from colorama import Fore, Style
@@ -13,13 +12,14 @@ class Authenticator:
     """
     Twitter API Authentication handler for Zohali
     """
-    __status: bool = False
+    _status: bool = False
 
     # Static initialisers
     print("\n" + Fore.GREEN + Style.BRIGHT +
           "[+] Initialising Zohali..." + Style.RESET_ALL)
     try:
         if platform.platform().startswith("Windows"):
+            # TODO: Correctly handle path
             os.chdir("D:/Projects/zohali/app")
 
         elif platform.platform().startswith("Linux"):
@@ -51,7 +51,7 @@ class Authenticator:
 
             print(Fore.LIGHTBLUE_EX + Style.BRIGHT +
                   '[+] Authenticated successfully.' + Style.RESET_ALL)
-            Authenticator.__status = True
+            Authenticator._status = True
             return api
 
         except Exception as e:
@@ -60,7 +60,7 @@ class Authenticator:
 
     @property
     def authentication_status(self) -> bool:
-        return Authenticator.__status
+        return Authenticator._status
 
 
 if __name__ == "__main__":

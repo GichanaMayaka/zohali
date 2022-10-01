@@ -7,9 +7,7 @@ import requests
 from colorama import Fore, Style
 
 from .auth import Authenticator
-from .transformer import Transformer
 from .config import configs
-from .exceptions import ZohaliException
 
 
 class Parser:
@@ -21,8 +19,8 @@ class Parser:
     Functionalities handled herein include fetching, searching, and parsing.
     """
     # TODO: Convert print statements into logging statements...
-    __max_id: float = None
-    __encoding: str = configs.ENCODING
+    _max_id: float = None
+    _encoding: str = configs.ENCODING
 
     # Authentication handlers
     authenticator = Authenticator()

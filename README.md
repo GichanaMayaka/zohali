@@ -14,14 +14,16 @@ Quickly run the project using [docker](https://www.docker.com/) and
 ### Directory Structure:
 
     -/zohali/
-        .dockerignore
-        .gitignore
+        init.sh
         docker-compose.yml
         Dockerfile
-        init.sh
         README.md
         requirements.txt
         serve.py
+        .dockerignore
+        .gitignore
+        -/api/
+            __ini__.py
         -/app/
             __init__.py
             auth.py
@@ -50,3 +52,8 @@ Default configurations as shown below. Adjust accordingly
     EXCLUDE_REPLIES: = True
     INCLUDE_RETWEETS: = False
     TIMEOUT: = 15
+    POSTGRES_HOSTNAME:
+    POSTGRES_USER:
+    POSTGRES_PASSWORD: 
+    POSTGRES_PORT:
+    POSTGRES_DATABASE_NAME:

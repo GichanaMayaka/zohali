@@ -2,7 +2,6 @@ version: "3"
 services:
   app:
     build: .
-    # command: python ./serve.py
     container_name: app
     volumes:
       - ./:/zohali:rw
