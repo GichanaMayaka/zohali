@@ -27,10 +27,10 @@ class Parser:
     api = authenticator.authenticate()
 
     @classmethod
-    def fetch_tweets(cls, id: Optional[float] = None) -> Any:
+    def fetch_tweets(cls, max_id: Optional[float] = None) -> Any:
 
         if Parser.authenticator.authentication_status:
-            tweets: list = Parser.api.user_timeline(max_id=id, screen_name=configs.SCREEN_NAME, tweet_mode=configs.TWEET_MODE,
+            tweets: list = Parser.api.user_timeline(max_id=max_id, screen_name=configs.SCREEN_NAME, tweet_mode=configs.TWEET_MODE,
                                                     count=configs.TWEETS_COUNT, exclude_replies=configs.EXCLUDE_REPLIES, include_rts=configs.INCLUDE_RETWEETS)
 
         else:
@@ -68,26 +68,20 @@ class Parser:
         return image_paths
 
     @classmethod
-    def run(cls, id: Optional[float] = None) -> None:
-        """Parser class entry point"""
-        # Parser.__max_id: float = id
+    def run(cls, max_id: Optional[float] = None) -> List[str]:
+        """Parser class entry point and wrapper around fetching tweet and extracting information"""
+        tweets = Parser.fetch_tweets(max_id=max_id)
+        tweet_paths = Parser.parse_tweets(tweets=tweets)
+        
+        return tweet_paths
 
-        # try:
-        #     tweets = Parser.fetch_tweets()
-        #     Transformer.transform(Parser.parse_tweets(tweets=tweets))
-
-        # except ZohaliException:
-        #     print(Fore.LIGHTMAGENTA_EX +
-        #           "[-] Wrong parameter to transform method" + Style.RESET_ALL)
-        #     exit(-1)
-        pass
 
 if __name__ == "__main__":
     while True:
 
         try:
             time.sleep(configs.TIMEOUT)
-            Parser.run(id=None)
+            Parser.run(max_id=None)
 
         except KeyboardInterrupt:
             print(Fore.LIGHTMAGENTA_EX + "[-] Closing." + Style.RESET_ALL)

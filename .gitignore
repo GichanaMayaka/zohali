@@ -1,7 +1,8 @@
-app/__pycache__
+**/__pycache__
 app/images
 app/image_texts
 .env
 *.geojson
 
-venv
+venv/
+pgdata/**
