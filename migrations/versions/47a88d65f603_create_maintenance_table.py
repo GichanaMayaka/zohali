@@ -30,6 +30,7 @@ def upgrade() -> None:
                     sa.Column("end_time", sa.String(), nullable=True),
                     sa.Column("file_path", sa.String(), nullable=True),
                     )
+    sa.PrimaryKeyConstraint("id")
 
 
 def downgrade() -> None:

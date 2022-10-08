@@ -1,5 +1,6 @@
+from sqlalchemy import TIMESTAMP, Column, Integer, String
+
 from .database import Base
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, TIMESTAMP
 
 
 class MaintenanceSchedule(Base):

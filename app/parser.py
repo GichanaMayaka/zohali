@@ -8,6 +8,8 @@ from colorama import Fore, Style
 
 from .auth import Authenticator
 from .config import configs
+from .models import Base
+from .database import engine
 
 
 class Parser:
@@ -70,6 +72,7 @@ class Parser:
     @classmethod
     def run(cls, max_id: Optional[float] = None) -> List[str]:
         """Parser class entry point and wrapper around fetching tweet and extracting information"""
+        Base.metadata.create_all(bind=engine)
         tweets = Parser.fetch_tweets(max_id=max_id)
         tweet_paths = Parser.parse_tweets(tweets=tweets)
         
