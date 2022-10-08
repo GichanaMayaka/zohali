@@ -29,7 +29,7 @@ class Parser:
     api = authenticator.authenticate()
 
     @classmethod
-    def fetch_tweets(cls, max_id: Optional[float] = None) -> Any:
+    def fetch_tweets(cls, max_id: Optional[float] = None) -> list[Any]:
 
         if Parser.authenticator.authentication_status:
             tweets: list = Parser.api.user_timeline(max_id=max_id, screen_name=configs.SCREEN_NAME, tweet_mode=configs.TWEET_MODE,

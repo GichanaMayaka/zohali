@@ -22,7 +22,8 @@ class Transformer:
     try:
         print(Fore.LIGHTCYAN_EX +
               "[!] Attempting to create text folder" + Style.RESET_ALL)
-        os.mkdir("./image_texts/")
+        base_rel_path = "./image_texts/"
+        os.mkdir(base_rel_path)
         print(Fore.LIGHTCYAN_EX + "[!] Created" + Style.RESET_ALL)
 
     except FileNotFoundError as e:
@@ -47,6 +48,7 @@ class Transformer:
                     sharped_image = sharper.enhance(2)
                     image_text = pytesseract.image_to_string(sharped_image)
 
+                    # TODO: Handle path correctly
                     path_to_write: str = f"./image_texts/{image_path.split('/')[-1].split('.')[0]}.txt"
                     with open(path_to_write, "w", encoding=configs.ENCODING) as file:
                         print(
@@ -67,17 +69,22 @@ class Transformer:
         """Build a dataframe from the data parsed from the tweets"""
 
         data = pd.DataFrame(
-            columns=["region", "county", "area", "date", "time", "places"]
+            columns=["region", "area", "places", "time", "date",
+                     "county", "start_time", "end_time", "file_path",
+                     "tweet_id"]
         )
 
         if isinstance(text_paths, list) and len(text_paths) > 0:
-            for text in text_paths:
+            for text_path in text_paths:
                 data = pd.concat(
-                    objs=[data, Functions.extract_text(text)], axis=0
+                    objs=[data, Functions.extract_text(text_path)], axis=0
                 )
+
+                data["file_path"] = text_path
+                data["tweet_id"] = text_path.split("_")[-1].split(".")[0]
 
         return data
 
 
 if __name__ == "__main__":
-    Transformer.tablify(Transformer.transform([""]))
+    Transformer.tablify(Transformer.transform([]))

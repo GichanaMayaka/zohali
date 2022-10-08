@@ -1,4 +1,4 @@
-from sqlalchemy import TIMESTAMP, Column, Integer, String
+from sqlalchemy import TIMESTAMP, BigInteger, Column, Integer, String
 
 from .database import Base
 
@@ -14,5 +14,6 @@ class MaintenanceSchedule(Base):
     start_time = Column(String, nullable=True)
     end_time = Column(String, nullable=True)
     file_path = Column(String, nullable=True)
+    tweet_id = Column(BigInteger, nullable=True)
 
     __tablename__ = "maintenance_schedule"

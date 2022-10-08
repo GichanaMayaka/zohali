@@ -5,4 +5,5 @@ app/image_texts
 *.geojson
 
 venv/
+pgdata/
 pgdata/**
