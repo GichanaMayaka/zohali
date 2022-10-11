@@ -7,7 +7,7 @@ from colorama import Fore, Style
 from PIL import Image, ImageEnhance
 
 from .config import configs
-from .exceptions import ZohaliException
+from .exceptions import NoTweetsException
 from .utils import Functions
 
 
@@ -57,8 +57,7 @@ class Transformer:
                         text_paths.append(
                             path_to_write)
         else:
-            # TODO: create a custom exceptions class
-            raise ZohaliException(
+            raise NoTweetsException(
                 "No parameter supplied or wrong parameter type supplied to method Transformer.transform()"
             )
 
