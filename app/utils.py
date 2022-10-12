@@ -50,7 +50,7 @@ class Functions:
         frame = pd.DataFrame.from_dict(ordered_info.values())
 
         data = frame.apply(Functions.fill_dataframe, axis=0)
-        
+
         if "date" in data.columns:
             data.date = pd.to_datetime(data.date, format="%d.%m.%Y")
 
@@ -60,7 +60,7 @@ class Functions:
             data.time = data.time.str.lstrip()
             data.time = data.time.str.replace("—", "-")
             data.time = data.time.str.replace("--", "-")
-            data.time = data.time.str.replace("a.m", "a.m.", regex=False)
+            # data.time = data.time.str.replace("a.m", "a.m.", regex=False)
 
         if "county" in data.columns:
             data.county = data.apply(Functions.county_cleaner, axis=1)
@@ -83,6 +83,7 @@ class Functions:
 
     @staticmethod
     def fill_dataframe(df: pd.DataFrame) -> pd.DataFrame:
+        """The trick method... Impute missing rows"""
         if df.name == "area" or df.name == "county" or df.name == "region":
             df = df.ffill()  # .bfill()
         elif df.name == "places":
@@ -122,4 +123,4 @@ class Functions:
     @staticmethod
     def save(df: pd.DataFrame) -> Optional[int]:
         """Write the dataframe to database appending at the end"""
-        return df.to_sql(name="maintenance_schedule", con=engine, if_exists="append", index=False)
+        return df.to_sql(name="maintenance_schedule", con=engine, if_exists="append", index_label="id")

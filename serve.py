@@ -1,4 +1,5 @@
 import time
+
 import pandas as pd
 
 from app.config import configs
@@ -11,7 +12,7 @@ def serve() -> pd.DataFrame:
     data = Transformer.transform(
         Parser.run(max_id=None)
     )
-    
+
     return Transformer.tablify(data)
 
 

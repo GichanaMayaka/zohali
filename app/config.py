@@ -16,7 +16,7 @@ class dev_configs(BaseSettings):
     TWEETS_COUNT: Final[int] = 900
     EXCLUDE_REPLIES: Final[bool] = True
     INCLUDE_RETWEETS: Final[bool] = False
-    TIMEOUT: Final[int] = 15  # twitter api timeout in minutes
+    TIMEOUT: Final[int] = 120  # twitter api timeout in minutes
 
     # Database connection parameters
     POSTGRES_HOSTNAME: Final[str]
@@ -32,13 +32,18 @@ class dev_configs(BaseSettings):
 class prod_configs(dev_configs):
     pass
 
+    class Config:
+        env_file = ".env"
+
 
 class test_configs(dev_configs):
     pass
 
+    class Config:
+        env_file = ".env"
 
-class ConfigFactory(object):
-    """Inject configuration according to environment"""
+class ConfigFactory:
+    """Inject configuration according to environment at runtime"""
 
     def factory(self):
         env = os.environ.get("ENV", "development")
@@ -49,9 +54,9 @@ class ConfigFactory(object):
 
         if env == "development":
             return configs
-        elif env == "testing":
+        if env == "testing":
             return testing
-        elif env == "production":
+        if env == "production":
             return production
 
 
