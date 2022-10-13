@@ -1,14 +1,11 @@
-from typing import Any, Optional
+from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
-from sqlalchemy import or_, and_
 
-
+from .. import schemas, utils
 from ..database import get_db
 from ..models import MaintenanceSchedule
-from .. import schemas, utils
-
 
 router = APIRouter(prefix="/all", tags=["All Scheduled Maintenance"])
 
@@ -26,8 +23,8 @@ def get_all_scheduled_maintenance(
         MaintenanceSchedule.date.desc()
     )
 
-    response = utils.Utilities.match_criteria(
-        count, region, area, place, county, response
+    response, returned_count = utils.match_criteria(
+        count=count, region=region, area=area, place=place, county=county, response=response, db_session=db
     )
 
     if not response:
@@ -37,6 +34,8 @@ def get_all_scheduled_maintenance(
         )
 
     return {
-        "count": count,
+        "count": returned_count,
+        "region": region,
+        "county": county,
         "response": response
     }

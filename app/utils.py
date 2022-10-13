@@ -63,10 +63,19 @@ class Functions:
             # data.time = data.time.str.replace("a.m", "a.m.", regex=False)
 
         if "county" in data.columns:
+            data.county = data.county.str.lstrip()
             data.county = data.apply(Functions.county_cleaner, axis=1)
 
         if "region" in data.columns:
             data.region = data.apply(Functions.region_cleaner, axis=1)
+            data.region = data.region.str.replace(pat=r"\d", repl="", regex=True)
+            data.region = data.region.str.lstrip()
+            
+        if "area" in data.columns:
+            data.area = data.area.str.lstrip()
+            
+        if "places" in data.columns:
+            data.places = data.places.str.lstrip()
 
         return data
 

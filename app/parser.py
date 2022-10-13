@@ -43,7 +43,7 @@ class Parser:
     @classmethod
     def parse_tweets(cls, tweets: Any) -> List[str]:
 
-        image_paths: list = []
+        image_paths: list[str] = []
         # max_tweet_ids: list = []
 
         for tweet in tweets:

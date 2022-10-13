@@ -36,7 +36,7 @@ class Transformer:
 
     @classmethod
     def transform(cls, image_paths: List[str]) -> List[str]:
-        text_paths: list = []
+        text_paths: list[str] = []
 
         if isinstance(image_paths, list) and len(image_paths) > 0:
             for image_path in image_paths:

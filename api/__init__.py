@@ -18,15 +18,15 @@ app.include_router(all.router)
 app.include_router(stepwise.router)
 
 
-@app.get("/{name}", status_code=status.HTTP_200_OK, response_model=list[schemas.ResponseOut], response_model_exclude_none=True)
+@app.get("/{name}", status_code=status.HTTP_200_OK, response_model=list[schemas.ResponseOut], response_model_exclude_none=True, tags=["Index"])
 async def index(
     name: str = Path(default=None, regex=r"[a-zA-Z]", min_length=1),
     db: Session = Depends(get_db)
 ):
     response = db.query(MaintenanceSchedule).filter(
-        MaintenanceSchedule.places.ilike("%" + name + "%")
+        MaintenanceSchedule.places.ilike(f"%{name}%")
     ).order_by(
-        MaintenanceSchedule.id.desc()
+        MaintenanceSchedule.date.desc()
     ).all()
 
     return response

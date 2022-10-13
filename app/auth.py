@@ -57,6 +57,7 @@ class Authenticator:
         except Exception as e:
             print(Fore.RED + Style.DIM +
                   f'[-] Authentication failed with exception:\n\t {e}...' + Fore.RED + Style.DIM + "\nexiting" + Style.RESET_ALL)
+            sys.exit(0)
 
     @property
     def authentication_status(self) -> bool:
