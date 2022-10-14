@@ -23,7 +23,7 @@ def get_all_scheduled_maintenance(
         MaintenanceSchedule.date.desc()
     )
 
-    response, returned_count = utils.match_criteria(
+    response, retrieved_count = utils.match_criteria(
         count=count, region=region, area=area, place=place, county=county, response=response, db_session=db
     )
 
@@ -34,7 +34,7 @@ def get_all_scheduled_maintenance(
         )
 
     return {
-        "count": returned_count,
+        "count": retrieved_count,
         "region": region,
         "county": county,
         "response": response

@@ -28,7 +28,7 @@ def get_next_scheduled_maintenance(
         models.MaintenanceSchedule.date.desc()
     )
 
-    next, returned_count = utils.match_criteria(
+    next, retrieved_count = utils.match_criteria(
         count=count, region=region, area=area, place=place, county=county, response=next, db_session=db
     )
 
@@ -39,7 +39,7 @@ def get_next_scheduled_maintenance(
         )
 
     return {
-        "count": returned_count,
+        "count": retrieved_count,
         "region": region,
         "county": county,
         "response": next
@@ -64,7 +64,7 @@ def get_prev_scheduled_maintenance(
         models.MaintenanceSchedule.date.desc()
     )
 
-    prev, returned_count = utils.match_criteria(
+    prev, retrieved_count = utils.match_criteria(
         count=count, region=region, area=area, place=place, county=county, response=prev, db_session=db
     )
 
@@ -75,7 +75,7 @@ def get_prev_scheduled_maintenance(
         )
 
     return {
-        "count": returned_count,
+        "count": retrieved_count,
         "region": region,
         "county": county,
         "response": prev
@@ -99,7 +99,7 @@ def get_current_maintenance(
         models.MaintenanceSchedule.date.desc()
     )
 
-    current, returned_count = utils.match_criteria(
+    current, retrieved_count = utils.match_criteria(
         count=count, region=region, area=area, place=place, county=county, response=current, db_session=db
     )
 
@@ -110,7 +110,7 @@ def get_current_maintenance(
         )
 
     return {
-        "count": returned_count,
+        "count": retrieved_count,
         "region": region,
         "county": county,
         "response": current
