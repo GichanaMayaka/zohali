@@ -1,14 +1,18 @@
 version: "3"
 services:
-  app:
+  api:
     build: .
-    container_name: app
+    container_name: api
+    command: uvicorn api:app --reload --host 0.0.0.0 --port 8000
     volumes:
       - ./:/zohali:rw
     env_file:
       - .env
+    ports:
+      - 8000:8000
     depends_on:
       - zohali-db
+      - redis
 
   zohali-db:
     image: postgres:latest
@@ -23,3 +27,5 @@ services:
 
   redis:
     image: redis:latest
+    container_name: redis_worker
+    restart: always
