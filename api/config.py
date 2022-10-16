@@ -13,7 +13,7 @@ class base_config(BaseSettings):
     POSTGRES_DATABASE_NAME: Final[str]
 
     class Config:
-        env_file = ".api_env"
+        env_file = ".env"
 
 
 configs = base_config()

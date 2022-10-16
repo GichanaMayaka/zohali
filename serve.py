@@ -1,23 +1,5 @@
-import time
-
-import pandas as pd
-
-from app.config import configs
-from app.parser import Parser
-from app.transformer import Transformer
-from app.utils import Functions
-
-
-def serve() -> pd.DataFrame:
-    data = Transformer.transform(
-        Parser.run(max_id=None)
-    )
-
-    return Transformer.tablify(data)
+import uvicorn
 
 
 if __name__ == "__main__":
-    while True:
-        data = serve()
-        Functions.save(df=data)
-        time.sleep(configs.TIMEOUT)
+    uvicorn.run(app="api:app", host="0.0.0.0", port=8000, reload=True)

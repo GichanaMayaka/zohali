@@ -1,15 +1,11 @@
-from enum import Enum
-from typing import Dict, Optional, Union
+import asyncio
 
-from fastapi import Body, Cookie, Depends, FastAPI, Path, Query, status
-from numpy import place
-from sqlalchemy import func
-from sqlalchemy.orm import Session
+from fastapi import FastAPI, Path, status
 
-from .database import get_db
-from .models import MaintenanceSchedule
+from .database import engine
 from .routes import all, stepwise
-from . import schemas
+from .tasks import BackgroundListener
+from .models import Base
 
 
 app = FastAPI()
@@ -18,15 +14,20 @@ app.include_router(all.router)
 app.include_router(stepwise.router)
 
 
-@app.get("/{name}", status_code=status.HTTP_200_OK, response_model=list[schemas.ResponseOut], response_model_exclude_none=True, tags=["Index"])
+@app.on_event("startup")
+async def run_background_listener():
+    """
+        Runs background listener on startup
+    """
+    runner = BackgroundListener()
+    Base.metadata.create_all(bind=engine)
+    asyncio.create_task(runner.run_listener())
+
+
+@app.get("/{name}", status_code=status.HTTP_200_OK, tags=["Index"])
 async def index(
     name: str = Path(default=None, regex=r"[a-zA-Z]", min_length=1),
-    db: Session = Depends(get_db)
 ):
-    response = db.query(MaintenanceSchedule).filter(
-        MaintenanceSchedule.places.ilike(f"%{name}%")
-    ).order_by(
-        MaintenanceSchedule.date.desc()
-    ).all()
-
-    return response
+    return {
+        'message': f"Welcome, {name.capitalize()}"
+    }

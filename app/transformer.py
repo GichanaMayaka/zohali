@@ -7,7 +7,6 @@ from colorama import Fore, Style
 from PIL import Image, ImageEnhance
 
 from .config import configs
-from .exceptions import NoTweetsException
 from .utils import Functions
 
 
@@ -36,6 +35,7 @@ class Transformer:
 
     @classmethod
     def transform(cls, image_paths: List[str]) -> List[str]:
+
         text_paths: list[str] = []
 
         if isinstance(image_paths, list) and len(image_paths) > 0:
@@ -55,11 +55,11 @@ class Transformer:
                             Fore.LIGHTBLUE_EX + f"[!] Writing text to: {path_to_write}" + Style.RESET_ALL)
                         file.write(image_text)
                         text_paths.append(
-                            path_to_write)
+                            path_to_write
+                        )
+
         else:
-            raise NoTweetsException(
-                "No parameter supplied or wrong parameter type supplied to method Transformer.transform()"
-            )
+            print("[!] No tweet[s] fetched. Waiting...")
 
         return text_paths
 
@@ -67,10 +67,12 @@ class Transformer:
     def tablify(cls, text_paths: List[str]) -> pd.DataFrame:
         """Build a dataframe from the data parsed from the tweets"""
 
+        columns = ["region", "area", "places", "time", "date",
+                   "county", "start_time", "end_time", "file_path",
+                   "tweet_id"]
+
         data = pd.DataFrame(
-            columns=["region", "area", "places", "time", "date",
-                     "county", "start_time", "end_time", "file_path",
-                     "tweet_id"]
+            columns=columns
         )
 
         if isinstance(text_paths, list) and len(text_paths) > 0:

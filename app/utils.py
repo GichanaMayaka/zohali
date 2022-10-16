@@ -68,12 +68,14 @@ class Functions:
 
         if "region" in data.columns:
             data.region = data.apply(Functions.region_cleaner, axis=1)
-            data.region = data.region.str.replace(pat=r"\d", repl="", regex=True)
+            data.region = data.region.str.replace(
+                pat=r"\d", repl="", regex=True
+            )
             data.region = data.region.str.lstrip()
-            
+
         if "area" in data.columns:
             data.area = data.area.str.lstrip()
-            
+
         if "places" in data.columns:
             data.places = data.places.str.lstrip()
 
@@ -130,6 +132,6 @@ class Functions:
             return df.region
 
     @staticmethod
-    def save(df: pd.DataFrame) -> Optional[int]:
+    def save(connection_engine: Any, df: pd.DataFrame, table_name: str = "maintenance_schedule") -> Optional[int]:
         """Write the dataframe to database appending at the end"""
-        return df.to_sql(name="maintenance_schedule", con=engine, if_exists="append", index_label="id")
+        return df.to_sql(name=table_name, con=connection_engine, if_exists="append", index=False)

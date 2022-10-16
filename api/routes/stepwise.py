@@ -10,7 +10,7 @@ from ..database import get_db
 router = APIRouter(tags=["Stepwise Queries"])
 
 
-@router.get("/next", status_code=status.HTTP_200_OK, response_model=list[schemas.ResponseOut], response_model_exclude_none=True)
+@router.get("/next", status_code=status.HTTP_200_OK, response_model=schemas.ResponseOutWithStats, response_model_exclude_none=True)
 def get_next_scheduled_maintenance(
     db: Session = Depends(get_db),
     count: Optional[int] = Query(default=5, gt=0),
@@ -82,7 +82,7 @@ def get_prev_scheduled_maintenance(
     }
 
 
-@router.get("/now", status_code=status.HTTP_200_OK, response_model=list[schemas.ResponseOut], response_model_exclude_none=True)
+@router.get("/now", status_code=status.HTTP_200_OK, response_model=schemas.ResponseOutWithStats, response_model_exclude_none=True)
 def get_current_maintenance(
     db: Session = Depends(get_db),
     count: Optional[int] = Query(default=5, gt=0),
