@@ -1,12 +1,13 @@
 import sys
 import time
+import random
 from typing import Any, List, Optional
 
 import requests
 from colorama import Fore, Style
 
 from .auth import Authenticator
-from .config import configs
+from confs.config import configs
 
 
 class Parser:
@@ -50,13 +51,12 @@ class Parser:
             if ("scheduled" in tweet.full_text or "planned" in tweet.full_text or "maintenance" in tweet.full_text or "interruption" in tweet.full_text) and tweet.entities.get("media"):
                 print(Fore.LIGHTBLUE_EX +
                       "[!] Match found..." + Style.RESET_ALL)
-                for media in tweet.entities.get("media"):
+                for media in tweet.extended_entities.get("media"):
                     image_data: bytes = requests.get(
                         media.get("media_url"), timeout=30
                     ).content
 
-                    # TODO: Add a random salt to image
-                    path_to_write = f"./images/image_{tweet.created_at.strftime('%Y%m%d_%H%M%S')}_{tweet.id}.png"
+                    path_to_write: str = f"./images/image_{tweet.created_at.strftime('%Y%m%d_%H%M%S')}_{random.randint(1, 1000)}_{tweet.id}.png"
                     with open(path_to_write, "wb") as img:
                         print(Fore.LIGHTBLUE_EX +
                               f"[!] Writing image to {path_to_write}" + Style.RESET_ALL)

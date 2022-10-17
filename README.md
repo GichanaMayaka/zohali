@@ -15,15 +15,23 @@ Quickly run the project using [docker](https://www.docker.com/) and
 
     -/zohali/
         init.sh
+        serve.py
+        README.md
         docker-compose.yml
         Dockerfile
-        README.md
         requirements.txt
-        serve.py
+        alembic.ini
         .dockerignore
         .gitignore
         -/api/
             __ini__.py
+            auth.py
+            config.py
+            database.py
+            models.py
+            schemas.py
+            tasks.py
+            utils.py
         -/app/
             __init__.py
             auth.py
@@ -36,6 +44,7 @@ Quickly run the project using [docker](https://www.docker.com/) and
             utils.py
             -/images/
             -/image_texts/
+        -/migrations
 
 ### Configuration
 Default configurations as shown below. Adjust accordingly
@@ -51,7 +60,7 @@ Default configurations as shown below. Adjust accordingly
     TWEETS_COUNT: = 900
     EXCLUDE_REPLIES: = True
     INCLUDE_RETWEETS: = False
-    TIMEOUT: = 15
+    TIMEOUT: = 120
     POSTGRES_HOSTNAME:
     POSTGRES_USER:
     POSTGRES_PASSWORD: 

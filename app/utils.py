@@ -1,11 +1,16 @@
+import sys
 from collections import OrderedDict
 from typing import Any, Optional
 
 import pandas as pd
+import pytesseract
+from PIL import Image, ImageEnhance
 
-from .config import configs
-from .database import engine
+sys.path.append(".")
+
 from .patterns import Patterns
+from confs.config import configs
+
 
 
 class Functions:
@@ -18,6 +23,7 @@ class Functions:
     @staticmethod
     def extract_text(path: str) -> pd.DataFrame:
         """Actual workhorse method"""
+        
         with open(path, "r", encoding=configs.ENCODING) as f:
             string = " ".join([line.rstrip() for line in f.readlines()])
             string = string.lower().replace(
@@ -83,6 +89,7 @@ class Functions:
 
     @staticmethod
     def match_patterns(string: str) -> tuple[Any, Any, Any, Any, Any, Any]:
+        
         region = Patterns.REGIONS.finditer(string)
         county = Patterns.COUNTY.finditer(string)
         place = Patterns.PLACES.finditer(string)
@@ -93,8 +100,21 @@ class Functions:
         return region, county, place, date, time, area
 
     @staticmethod
+    def preprocess_image(image_path: str, brightness: float = 1.5, sharpness: float = 2) -> Optional[str]:
+        
+        img = Image.open(image_path).convert("L")
+        enhancer = ImageEnhance.Brightness(img)
+        image = enhancer.enhance(brightness)
+        sharper = ImageEnhance.Sharpness(image=image)
+        sharped_image = sharper.enhance(sharpness)
+        image_text = pytesseract.image_to_string(sharped_image)
+        
+        return image_text
+
+    @staticmethod
     def fill_dataframe(df: pd.DataFrame) -> pd.DataFrame:
         """The trick method... Impute missing rows"""
+        
         if df.name == "area" or df.name == "county" or df.name == "region":
             df = df.ffill()  # .bfill()
         elif df.name == "places":
@@ -105,6 +125,7 @@ class Functions:
 
     @staticmethod
     def county_cleaner(df: pd.DataFrame) -> pd.Series:
+        
         if pd.isnull(df.county):
             return df.county
         elif "of" in df.county:
@@ -115,6 +136,7 @@ class Functions:
     @staticmethod
     def time_cleaner(df: pd.DataFrame) -> pd.Series:
         """Append pm to end time in time pandas column"""
+        
         if pd.isnull(df.time) or "p.m." in df.time:
             return df.time
         elif "p.m." not in df.time:
@@ -124,6 +146,7 @@ class Functions:
 
     @staticmethod
     def region_cleaner(df: pd.DataFrame) -> pd.Series:
+        
         if pd.isnull(df.region):
             return df.region
         elif "of" in df.region:
@@ -132,6 +155,7 @@ class Functions:
             return df.region
 
     @staticmethod
-    def save(connection_engine: Any, df: pd.DataFrame, table_name: str = "maintenance_schedule") -> Optional[int]:
+    def save(connection_engine: Any, data: pd.DataFrame, table_name: str = "maintenance_schedule") -> Optional[int]:
         """Write the dataframe to database appending at the end"""
-        return df.to_sql(name=table_name, con=connection_engine, if_exists="append", index=False)
+        
+        return data.to_sql(name=table_name, con=connection_engine, if_exists="append", index=False)

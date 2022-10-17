@@ -1,12 +1,13 @@
 import os
+import sys
 from typing import List
 
 import pandas as pd
-import pytesseract
 from colorama import Fore, Style
-from PIL import Image, ImageEnhance
 
-from .config import configs
+sys.path.append(".")
+
+from confs.config import configs
 from .utils import Functions
 
 
@@ -41,14 +42,9 @@ class Transformer:
         if isinstance(image_paths, list) and len(image_paths) > 0:
             for image_path in image_paths:
                 if image_path.endswith(".png"):
-                    img = Image.open(image_path).convert("L")
-                    enhancer = ImageEnhance.Brightness(img)
-                    image = enhancer.enhance(1.5)
-                    sharper = ImageEnhance.Sharpness(image=image)
-                    sharped_image = sharper.enhance(2)
-                    image_text = pytesseract.image_to_string(sharped_image)
+                    
+                    image_text = Functions.preprocess_image(image_path, brightness=1.5, sharpness=2)
 
-                    # TODO: Handle path correctly
                     path_to_write: str = f"./image_texts/{image_path.split('/')[-1].split('.')[0]}.txt"
                     with open(path_to_write, "w", encoding=configs.ENCODING) as file:
                         print(
@@ -59,7 +55,7 @@ class Transformer:
                         )
 
         else:
-            print("[!] No tweet[s] fetched. Waiting...")
+            print("[!] No tweet[s] fetched. Listening...")
 
         return text_paths
 

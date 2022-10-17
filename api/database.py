@@ -1,8 +1,12 @@
+import sys
+
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-from .config import configs
+sys.path.append(".")
+
+from confs.config import configs
 
 engine = create_engine(
     f"postgresql+psycopg2://{configs.POSTGRES_USER}:{configs.POSTGRES_PASSWORD}@{configs.POSTGRES_HOSTNAME}/{configs.POSTGRES_DATABASE_NAME}",

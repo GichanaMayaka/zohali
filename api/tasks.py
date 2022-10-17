@@ -5,7 +5,7 @@ import pandas as pd
 
 sys.path.append(".")
 
-from app.config import configs
+from confs.config import configs
 from app.parser import Parser
 from app.transformer import Transformer
 from app.utils import Functions
@@ -14,7 +14,7 @@ from .database import engine
 
 
 class BackgroundListener:
-    """Run the task that fetches and parses tweets in the background asynchonously"""
+    """Run the task that fetches and parses tweets in the background asynchronously"""
     def get_tweets(self) -> pd.DataFrame:
 
         data = Transformer.transform(
@@ -26,7 +26,7 @@ class BackgroundListener:
     async def run_listener(self):
         while True:
             data = self.get_tweets()
-            Functions.save(df=data, connection_engine=engine)
+            Functions.save(data=data, connection_engine=engine)
             await asyncio.sleep(configs.TIMEOUT)
 
 

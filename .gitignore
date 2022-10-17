@@ -1,9 +1,14 @@
-**/__pycache__
+api/main.py
+api/playground.py
 app/images
 app/image_texts
+
+**/__pycache__
+
 .env
 *.geojson
 
 venv/
 pgdata/
 pgdata/**
+*.sql

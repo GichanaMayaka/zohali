@@ -5,7 +5,9 @@ import platform
 import tweepy
 from colorama import Fore, Style
 
-from .config import configs
+sys.path.append(".")
+
+from confs.config import configs
 
 
 class Authenticator:
