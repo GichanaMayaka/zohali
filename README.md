@@ -44,7 +44,10 @@ Quickly run the project using [docker](https://www.docker.com/) and
             utils.py
             -/images/
             -/image_texts/
-        -/migrations
+        -/confs/
+            __init__.py
+            configs.py
+        -/migrations/
 
 ### Configuration
 Default configurations as shown below. Adjust accordingly
