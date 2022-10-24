@@ -1,4 +1,4 @@
-version: "3"
+version: "3.8"
 services:
   api:
     build: .
@@ -9,7 +9,7 @@ services:
     env_file:
       - .env
     ports:
-      - 8000:8000
+      - "8000:80"
     depends_on:
       - zohali-db
       - redis
@@ -17,11 +17,11 @@ services:
   zohali-db:
     image: postgres:latest
     container_name: zohali-db
-    volumes:
-      - ./pgdata:/var/lib/postgresql/data
+    # volumes:
+    #   - ./pgdata:/var/lib/postgresql/data
     restart: always
-    ports:
-      - 5432:5432
+    expose:
+      - 5432
     env_file:
       - .env
 
@@ -29,3 +29,24 @@ services:
     image: redis:latest
     container_name: redis_worker
     restart: always
+    expose:
+      - 6379
+
+  admin:
+    image: adminer
+    container_name: admin
+    restart: always
+    depends_on:
+      - zohali-db
+    ports:
+      - "8080:8080"
+
+  reverse-proxy:
+    image: nginx
+    container_name: reverse-proxy
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "80:80"
+    depends_on:
+      - api

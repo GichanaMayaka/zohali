@@ -3,14 +3,13 @@ from collections import OrderedDict
 from typing import Any, Optional
 
 import pandas as pd
-import pytesseract
 from PIL import Image, ImageEnhance
 
 sys.path.append(".")
 
-from .patterns import Patterns
 from confs.config import configs
 
+from .patterns import Patterns
 
 
 class Functions:
@@ -22,8 +21,10 @@ class Functions:
 
     @staticmethod
     def extract_text(path: str) -> pd.DataFrame:
-        """Actual workhorse method"""
-        
+        """
+            Actual workhorse method. Matches patterns, and extracts the matched information into a dataframe
+        """
+
         with open(path, "r", encoding=configs.ENCODING) as f:
             string = " ".join([line.rstrip() for line in f.readlines()])
             string = string.lower().replace(
@@ -58,7 +59,7 @@ class Functions:
         data = frame.apply(Functions.fill_dataframe, axis=0)
 
         if "date" in data.columns:
-            data.date = pd.to_datetime(data.date, format="%d.%m.%Y")
+            data.date = pd.to_datetime(data.date, infer_datetime_format=True, dayfirst=True)
 
         if "time" in data.columns:
             data = data[data.time.notnull()].reset_index(drop=True)
@@ -89,7 +90,9 @@ class Functions:
 
     @staticmethod
     def match_patterns(string: str) -> tuple[Any, Any, Any, Any, Any, Any]:
-        
+        """
+            Match the patterns on input string
+        """
         region = Patterns.REGIONS.finditer(string)
         county = Patterns.COUNTY.finditer(string)
         place = Patterns.PLACES.finditer(string)
@@ -100,20 +103,24 @@ class Functions:
         return region, county, place, date, time, area
 
     @staticmethod
-    def preprocess_image(image_path: str, brightness: float = 1.5, sharpness: float = 2) -> Optional[str]:
-        
+    def preprocess_image(image_path: str, brightness: float = 1.5, sharpness: float = 2) -> Optional[Image.Image]:
+        """
+            Resize, and threshold image, brighten, and sharpen in order to increase OCR accuracy
+        """
         img = Image.open(image_path).convert("L")
+        img = img.resize([2 * _ for _ in img.size], Image.Resampling.BICUBIC).point(lambda p: p > 75 and p + 100)
         enhancer = ImageEnhance.Brightness(img)
         image = enhancer.enhance(brightness)
         sharper = ImageEnhance.Sharpness(image=image)
         sharped_image = sharper.enhance(sharpness)
-        image_text = pytesseract.image_to_string(sharped_image)
-        
-        return image_text
+
+        return sharped_image
 
     @staticmethod
     def fill_dataframe(df: pd.DataFrame) -> pd.DataFrame:
-        """The trick method... Impute missing rows"""
+        """
+            The trick method... Impute missing rows
+        """
         
         if df.name == "area" or df.name == "county" or df.name == "region":
             df = df.ffill()  # .bfill()
@@ -155,7 +162,7 @@ class Functions:
             return df.region
 
     @staticmethod
-    def save(connection_engine: Any, data: pd.DataFrame, table_name: str = "maintenance_schedule") -> Optional[int]:
+    def save(data: pd.DataFrame, connection_engine: Any, table_name: str = "maintenance_schedule") -> Optional[int]:
         """Write the dataframe to database appending at the end"""
-        
+
         return data.to_sql(name=table_name, con=connection_engine, if_exists="append", index=False)

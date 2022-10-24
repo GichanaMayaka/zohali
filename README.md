@@ -21,6 +21,7 @@ Quickly run the project using [docker](https://www.docker.com/) and
         Dockerfile
         requirements.txt
         alembic.ini
+        nginx.conf
         .dockerignore
         .gitignore
         -/api/

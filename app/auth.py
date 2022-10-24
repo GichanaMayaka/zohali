@@ -18,7 +18,7 @@ class Authenticator:
 
     # Static initialisers
     print("\n" + Fore.GREEN + Style.BRIGHT +
-          "[+] Initialising Zohali..." + Style.RESET_ALL)
+          "[+] Starting..." + Style.RESET_ALL)
     try:
         if platform.platform().startswith("Windows"):
             # TODO: Correctly handle path
@@ -63,6 +63,7 @@ class Authenticator:
 
     @property
     def authentication_status(self) -> bool:
+        """Status of authentication"""
         return Authenticator._status
 
 

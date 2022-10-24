@@ -3,6 +3,7 @@ import sys
 from typing import List
 
 import pandas as pd
+import pytesseract
 from colorama import Fore, Style
 
 sys.path.append(".")
@@ -16,20 +17,14 @@ class Transformer:
     Transformer class that extracts text from the images passed as method parameters.
     Extracted text are stored in a .txt file named similarly as the input image.
     """
-    # Static initialiser block, sort of... this isn't Java afterall
-    print(Fore.GREEN + Style.BRIGHT +
-          "[+] Starting Transformer module." + Style.RESET_ALL)
     try:
-        print(Fore.LIGHTCYAN_EX +
-              "[!] Attempting to create text folder" + Style.RESET_ALL)
         base_rel_path = "./image_texts/"
         os.mkdir(base_rel_path)
-        print(Fore.LIGHTCYAN_EX + "[!] Created" + Style.RESET_ALL)
 
     except FileNotFoundError as e:
         print(Fore.LIGHTMAGENTA_EX + Style.BRIGHT +
               "[!] Cannot create text folder. Exiting" + Style.RESET_ALL)
-        exit(1)
+        sys.exit(-1)
     except FileExistsError as e:
         print(Fore.LIGHTMAGENTA_EX + Style.BRIGHT +
               "[!] Text folder already exists. Continuing" + Style.RESET_ALL)
@@ -43,7 +38,8 @@ class Transformer:
             for image_path in image_paths:
                 if image_path.endswith(".png"):
                     
-                    image_text = Functions.preprocess_image(image_path, brightness=1.5, sharpness=2)
+                    image = Functions.preprocess_image(image_path, brightness=1.5, sharpness=2)
+                    image_text = pytesseract.image_to_string(image)
 
                     path_to_write: str = f"./image_texts/{image_path.split('/')[-1].split('.')[0]}.txt"
                     with open(path_to_write, "w", encoding=configs.ENCODING) as file:

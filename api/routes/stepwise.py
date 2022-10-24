@@ -4,7 +4,8 @@ from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 
-from .. import models, schemas, utils
+from .. import models, schemas
+from ..utils import match_criteria
 from ..database import get_db
 
 router = APIRouter(tags=["Stepwise Queries"])
@@ -28,7 +29,7 @@ def get_next_scheduled_maintenance(
         models.MaintenanceSchedule.date.desc()
     )
 
-    next, retrieved_count = utils.match_criteria(
+    next, retrieved_count = match_criteria(
         count=count, region=region, area=area, place=place, county=county, response=next, db_session=db
     )
 
@@ -38,12 +39,12 @@ def get_next_scheduled_maintenance(
             detail="No scheduled maintenance after now. Please check in later."
         )
 
-    return {
-        "count": retrieved_count,
-        "region": region,
-        "county": county,
-        "response": next
-    }
+    return schemas.ResponseOutWithStats(
+        count=retrieved_count,
+        region=region,
+        county=county,
+        response=next
+    )
 
 
 @router.get("/prev", status_code=status.HTTP_200_OK, response_model=schemas.ResponseOutWithStats, response_model_exclude_none=True)
@@ -64,7 +65,7 @@ def get_prev_scheduled_maintenance(
         models.MaintenanceSchedule.date.desc()
     )
 
-    prev, retrieved_count = utils.match_criteria(
+    prev, retrieved_count = match_criteria(
         count=count, region=region, area=area, place=place, county=county, response=prev, db_session=db
     )
 
@@ -74,12 +75,12 @@ def get_prev_scheduled_maintenance(
             detail="No tracked expired scheduled maitenance."
         )
 
-    return {
-        "count": retrieved_count,
-        "region": region,
-        "county": county,
-        "response": prev
-    }
+    return schemas.ResponseOutWithStats(
+        count=retrieved_count,
+        region=region,
+        county=county,
+        response=prev
+    )
 
 
 @router.get("/now", status_code=status.HTTP_200_OK, response_model=schemas.ResponseOutWithStats, response_model_exclude_none=True)
@@ -99,7 +100,7 @@ def get_current_maintenance(
         models.MaintenanceSchedule.date.desc()
     )
 
-    current, retrieved_count = utils.match_criteria(
+    current, retrieved_count = match_criteria(
         count=count, region=region, area=area, place=place, county=county, response=current, db_session=db
     )
 
@@ -109,9 +110,10 @@ def get_current_maintenance(
             detail="No scheduled maintenance underway."
         )
 
-    return {
-        "count": retrieved_count,
-        "region": region,
-        "county": county,
-        "response": current
-    }
+
+    return schemas.ResponseOutWithStats(
+        count=retrieved_count,
+        region=region,
+        county=county,
+        response=current
+    )

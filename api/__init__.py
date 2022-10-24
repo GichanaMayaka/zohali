@@ -6,9 +6,11 @@ from .database import engine
 from .routes import all, stepwise
 from .tasks import BackgroundListener
 from .models import Base
+from .middleware import allow_request_origins
 
 
 app = FastAPI()
+app = allow_request_origins(app=app)
 
 app.include_router(all.router)
 app.include_router(stepwise.router)

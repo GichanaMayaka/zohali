@@ -3,7 +3,8 @@ from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 
-from .. import schemas, utils
+from .. import schemas
+from ..utils import match_criteria
 from ..database import get_db
 from ..models import MaintenanceSchedule
 
@@ -23,7 +24,7 @@ def get_all_scheduled_maintenance(
         MaintenanceSchedule.date.desc()
     )
 
-    response, retrieved_count = utils.match_criteria(
+    response, retrieved_count = match_criteria(
         count=count, region=region, area=area, place=place, county=county, response=response, db_session=db
     )
 
@@ -33,9 +34,9 @@ def get_all_scheduled_maintenance(
             detail="No tracked maintenance yet"
         )
 
-    return {
-        "count": retrieved_count,
-        "region": region,
-        "county": county,
-        "response": response
-    }
+    return schemas.ResponseOutWithStats(
+        count=retrieved_count,
+        region=region,
+        county=county,
+        response=response
+    )
