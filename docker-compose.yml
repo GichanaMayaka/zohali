@@ -17,8 +17,6 @@ services:
   zohali-db:
     image: postgres:latest
     container_name: zohali-db
-    # volumes:
-    #   - ./pgdata:/var/lib/postgresql/data
     restart: always
     expose:
       - 5432
