@@ -1,0 +1,155 @@
+{
+  "info": {
+    "_postman_id": "141a086d-555a-410a-b1e6-0c67f3e51f79",
+    "name": "zohali",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "21822248"
+  },
+  "item": [
+    {
+      "name": "get all tracked scheduled maintenance",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer"
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{host}}/all/?count=15",
+          "host": ["{{host}}"],
+          "path": ["all", ""],
+          "query": [
+            {
+              "key": "count",
+              "value": "15"
+            },
+            {
+              "key": "region",
+              "value": "coast",
+              "disabled": true
+            },
+            {
+              "key": "county",
+              "value": "kilifi",
+              "disabled": true
+            },
+            {
+              "key": "area",
+              "value": "taita",
+              "disabled": true
+            },
+            {
+              "key": "place",
+              "value": "tana",
+              "disabled": true
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "next scheduled maintenance",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{host}}/next?count=15",
+          "host": ["{{host}}"],
+          "path": ["next"],
+          "query": [
+            {
+              "key": "count",
+              "value": "15"
+            },
+            {
+              "key": "region",
+              "value": "",
+              "disabled": true
+            },
+            {
+              "key": "county",
+              "value": "nairobi",
+              "disabled": true
+            },
+            {
+              "key": "area",
+              "value": "",
+              "disabled": true
+            },
+            {
+              "key": "place",
+              "value": "embakasi",
+              "disabled": true
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "previous scheduled maintenance",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{host}}/prev?count=10",
+          "host": ["{{host}}"],
+          "path": ["prev"],
+          "query": [
+            {
+              "key": "count",
+              "value": "10"
+            },
+            {
+              "key": "region",
+              "value": "kenya",
+              "disabled": true
+            },
+            {
+              "key": "county",
+              "value": "nairobi",
+              "disabled": true
+            },
+            {
+              "key": "area",
+              "value": "embakasi",
+              "disabled": true
+            },
+            {
+              "key": "place",
+              "value": "matasia",
+              "disabled": true
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "current scheduled maintenance",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{host}}/now/",
+          "host": ["{{host}}"],
+          "path": ["now", ""]
+        }
+      },
+      "response": []
+    }
+  ]
+}
