@@ -6,7 +6,7 @@ RUN chmod -R 755 /zohali
 
 COPY requirements.txt ./
 
-RUN apt-get -y update && apt-get install -y tesseract-ocr && apt install -y libtesseract-dev
+RUN apt-get -y update && apt-get install -y tesseract-ocr && apt install -y libtesseract-dev && apt-get install -y netcat
 
 RUN pip install -r requirements.txt
 

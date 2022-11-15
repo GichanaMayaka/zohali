@@ -11,4 +11,3 @@ app/image_texts
 venv/
 pgdata/
 pgdata/**
-*.sql
