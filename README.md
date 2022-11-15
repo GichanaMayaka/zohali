@@ -1,12 +1,15 @@
 ## Project Zohali (Saturn)
+
 This is an API that consumes Kenya Power's Tweets to check for scheduled/planned maintenance in Kenya.
 Information extracted includes the Region, County, Area, Specific places, time as well as date of the planned incidents.
 
 Future developments include intergrating with a Twitter Bot.
 
 ### Getting Started
+
 Quickly run the project using [docker](https://www.docker.com/) and
 [docker-compose](https://docs.docker.com/compose/):
+
 ```bash
     $ docker-compose up -d
 ```
@@ -51,6 +54,7 @@ Quickly run the project using [docker](https://www.docker.com/) and
         -/migrations/
 
 ### Configuration
+
 Default configurations as shown below. Adjust accordingly
 
     ENCODING: = "utf-8"
@@ -67,6 +71,14 @@ Default configurations as shown below. Adjust accordingly
     TIMEOUT: = 120
     POSTGRES_HOSTNAME:
     POSTGRES_USER:
-    POSTGRES_PASSWORD: 
+    POSTGRES_PASSWORD:
     POSTGRES_PORT:
     POSTGRES_DATABASE_NAME:
+
+### Endpoints
+
+| METHOD | ENDPOINT |                          DESCRIPTION |
+| ------ | :------: | -----------------------------------: |
+| GET    |  /all/   | Get the previous 100 tracked records |
+| GET    |  /prev/  |   Get the previous 5 tracked records |
+| GET    |  /next/  |       Get the next 5 tracked records |
