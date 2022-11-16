@@ -11,3 +11,5 @@ app/image_texts
 venv/
 pgdata/
 pgdata/**
+
+**/.pytest_cache/*
