@@ -16,13 +16,13 @@ class dev_configs(BaseSettings):
     TWEETS_COUNT: Final[int] = 900
     EXCLUDE_REPLIES: Final[bool] = True
     INCLUDE_RETWEETS: Final[bool] = False
-    TIMEOUT: Final[int] = 120  # twitter api timeout in minutes
+    TIMEOUT: Final[int] = 120
 
     # Database connection parameters
     POSTGRES_HOSTNAME: Final[str]
     POSTGRES_USER: Final[str]
     POSTGRES_PASSWORD: Final[str]
-    POSTGRES_PORT: Final[int]
+    POSTGRES_PORT: Final[int] = 5432
     POSTGRES_DATABASE_NAME: Final[str]
 
     class Config:
