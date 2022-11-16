@@ -90,7 +90,7 @@ class TweetListener(ListenerBuilder):
                 "media"
             ):
                 print(Fore.LIGHTBLUE_EX +
-                      "[!] Match found... @" + datetime.now().strftime("%H:%M:%S") + Style.RESET_ALL)
+                      f"[!] Match found... @ {datetime.now().strftime('%H:%M:%S')}" + Style.RESET_ALL)
 
                 for media in tweet.extended_entities.get("media"):
                     image_data: bytes = requests.get(

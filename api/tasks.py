@@ -4,8 +4,8 @@ import sys
 import pandas as pd
 
 sys.path.append(".")
-from app.runner import Runner
 from app import utils
+from app.runner import Runner
 from confs.config import configs
 
 from .database import engine
@@ -30,7 +30,7 @@ class BackgroundListener:
 
         while True:
             data = self.get_tweets()
-            # utils.save(data=data, connection_engine=engine)
+            utils.save(data=data, connection_engine=engine)
             await asyncio.sleep(configs.TIMEOUT)
 
 
