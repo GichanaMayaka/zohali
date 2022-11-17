@@ -29,10 +29,10 @@ class ListenerBuilder(ABC):
                  ):
         self._max_id = max_id
         self._since_id = since_id
-        self.encoding = configs.ENCODING
-        self.auther = authenticator
-        self.api = self.auther.get_api()
-        self.authentication_status = self.auther.authentication_status
+        self._encoding = configs.ENCODING
+        self._auther = authenticator
+        self._api = self._auther.get_api()
+        self._authentication_status = self._auther.authentication_status
 
     @abstractmethod
     def authenticate(self) -> tweepy.API:
@@ -61,11 +61,11 @@ class TweetListener(ListenerBuilder):
         super(TweetListener, self).__init__(max_id=max_id, since_id=since_id, authenticator=authenticator)
 
     def authenticate(self) -> tweepy.API:
-        return self.auther.authenticate()
+        return self._auther.authenticate()
 
     def fetch_tweets(self) -> Optional[List[Any]]:
-        if self.authentication_status:
-            tweets: list[Any] = self.api.user_timeline(
+        if self._authentication_status:
+            tweets: list[Any] = self._api.user_timeline(
                 max_id=self._max_id,
                 since_id=self._since_id,
                 screen_name=configs.SCREEN_NAME,
@@ -118,7 +118,7 @@ class TweetListener(ListenerBuilder):
                     image_text = pytesseract.image_to_string(image)
 
                     path_to_write: str = f"./image_texts/{image_path.split('/')[-1].split('.')[0]}.txt"
-                    with open(path_to_write, "w", encoding=configs.ENCODING) as file:
+                    with open(path_to_write, "w", encoding=self._encoding) as file:
                         print(
                             Fore.LIGHTBLUE_EX + f"[!] Writing text to: {path_to_write}" + Style.RESET_ALL)
                         file.write(image_text)

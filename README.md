@@ -67,7 +67,7 @@ Default configurations as shown below. Adjust accordingly
     ACCESS_TOKEN_SECRET:
     SCREEN_NAME: = "KenyaPower_Care"
     TWEET_MODE: = "extended"
-    TWEETS_COUNT: = 900
+    TWEETS_COUNT: = 1500
     EXCLUDE_REPLIES: = True
     INCLUDE_RETWEETS: = False
     TIMEOUT: = 120
