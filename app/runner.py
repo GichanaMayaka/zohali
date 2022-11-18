@@ -6,14 +6,15 @@ from typing import Optional
 import pandas as pd
 from colorama import Fore, Style
 
-from .authenticators import AbstractAuthenticator, Authenticator
+from .authenticators import Authenticator
 from .tweetListeners import ListenerBuilder, TweetListener
 
 
 class Runner:
     def __init__(self, max_id: Optional[int] = None, since_id: Optional[int] = None):
         self.tweet_listener: ListenerBuilder = TweetListener(
-            authenticator=Authenticator(), max_id=None, since_id=None)
+            authenticator=Authenticator(), max_id=max_id, since_id=since_id
+        )
 
     def fetcher(self) -> pd.DataFrame:
         """

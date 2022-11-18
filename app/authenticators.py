@@ -1,5 +1,5 @@
-import sys
 from abc import ABC, abstractmethod
+from typing import Any
 
 import tweepy
 from colorama import Fore, Style
@@ -30,7 +30,7 @@ class AbstractAuthenticator(ABC):
 
     @property
     @abstractmethod
-    def authentication_status(self) -> bool:
+    def is_authenticated(self) -> bool:
         """Authentication status property"""
 
     @abstractmethod
@@ -46,12 +46,15 @@ class Authenticator(AbstractAuthenticator):
         access_token: str = configs.ACCESS_TOKEN,
         access_token_secret: str = configs.ACCESS_TOKEN_SECRET
     ) -> None:
-        try:
-            auth = tweepy.OAuthHandler(api_key, api_key_secret)
-            auth.set_access_token(access_token,
-                                  access_token_secret)
+        auth_handler = tweepy.OAuth1UserHandler(
+            consumer_key=api_key,
+            consumer_secret=api_key_secret,
+            access_token=access_token,
+            access_token_secret=access_token_secret
+        )
 
-            self.api = tweepy.API(auth, wait_on_rate_limit=True)
+        try:
+            self.api = tweepy.API(auth_handler, wait_on_rate_limit=True)
 
             self.api.verify_credentials()
 
@@ -63,8 +66,11 @@ class Authenticator(AbstractAuthenticator):
         except tweepy.errors.Unauthorized as error:
             raise Exception("Unauthorised credentials") from error
 
+        except TypeError as error:
+            raise Exception("Not a parser object") from error
+
     @property
-    def authentication_status(self) -> bool:
+    def is_authenticated(self) -> bool:
         return self.status
 
     def get_api(self) -> tweepy.API:

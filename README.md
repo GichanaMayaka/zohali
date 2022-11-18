@@ -49,6 +49,10 @@ Quickly run the project using [docker](https://www.docker.com/) and
         -/migrations/
         -/data/
             db.sql
+        -/tests/
+            __init__.py
+            test_authenticator.py
+            test_tweetListener.py
         -/postman collection/
             zohali.postman_collection.json
 

@@ -65,11 +65,13 @@ def extract_text(path: str) -> pd.DataFrame:
         data.time = data.time.str.lstrip()
         data.time = data.time.str.replace("—", "-")
         data.time = data.time.str.replace("--", "-")
-        # data.time = data.time.str.replace("a.m", "a.m.", regex=False)
 
     if "county" in data.columns:
         data.county = data.county.str.lstrip()
         data.county = data.apply(county_cleaner, axis=1)
+        data.county = data.county.str.replace(
+            pat=r"\d", repl="", regex=True
+        )
 
     if "region" in data.columns:
         data.region = data.apply(region_cleaner, axis=1)

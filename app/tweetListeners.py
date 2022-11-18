@@ -1,14 +1,14 @@
 import random
 from abc import ABC, abstractmethod
 from datetime import datetime
-from typing import Optional, List, Any
+from typing import Any, List, Optional
 
 import pandas as pd
 import pytesseract
 import requests
 from colorama import Fore, Style
-
 from confs.config import configs
+
 from . import utils
 from .authenticators import AbstractAuthenticator, Authenticator
 
@@ -31,7 +31,7 @@ class ListenerBuilder(ABC):
         self._encoding = configs.ENCODING
         self._auther = authenticator
         self._api = self._auther.get_api()
-        self._authentication_status = self._auther.authentication_status
+        self._is_authenticated = self._auther.is_authenticated
 
     @abstractmethod
     def fetch_tweets(self) -> Optional[List[Any]]:
@@ -57,7 +57,7 @@ class TweetListener(ListenerBuilder):
                                             since_id=since_id, authenticator=authenticator)
 
     def fetch_tweets(self) -> Optional[List[Any]]:
-        if self._authentication_status:
+        if self._is_authenticated:
             tweets: list[Any] = self._api.user_timeline(
                 max_id=self._max_id,
                 since_id=self._since_id,
@@ -70,6 +70,9 @@ class TweetListener(ListenerBuilder):
 
             if len(tweets) > 0:
                 self._since_id = max((tweet.id for tweet in tweets))
+
+        else:
+            raise Exception("Authentication did not happen") from UnboundLocalError
 
         return tweets
 

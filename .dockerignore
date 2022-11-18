@@ -12,3 +12,5 @@ venv/
 pgdata/
 pgdata/**
 *.sql
+
+**/.pytest_cache/*
