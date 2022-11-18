@@ -6,7 +6,6 @@ from typing import Optional, List, Any
 import pandas as pd
 import pytesseract
 import requests
-import tweepy
 from colorama import Fore, Style
 
 from confs.config import configs
@@ -35,10 +34,6 @@ class ListenerBuilder(ABC):
         self._authentication_status = self._auther.authentication_status
 
     @abstractmethod
-    def authenticate(self) -> tweepy.API:
-        """Authentication handler"""
-
-    @abstractmethod
     def fetch_tweets(self) -> Optional[List[Any]]:
         """Fetch tweets"""
 
@@ -58,10 +53,8 @@ class ListenerBuilder(ABC):
 class TweetListener(ListenerBuilder):
     def __init__(self, authenticator: AbstractAuthenticator, max_id: Optional[int] = None,
                  since_id: Optional[int] = None):
-        super(TweetListener, self).__init__(max_id=max_id, since_id=since_id, authenticator=authenticator)
-
-    def authenticate(self) -> tweepy.API:
-        return self._auther.authenticate()
+        super(TweetListener, self).__init__(max_id=max_id,
+                                            since_id=since_id, authenticator=authenticator)
 
     def fetch_tweets(self) -> Optional[List[Any]]:
         if self._authentication_status:
@@ -87,7 +80,7 @@ class TweetListener(ListenerBuilder):
             if (
                     "scheduled" in tweet.full_text or "planned" in tweet.full_text or "maintenance" in tweet.full_text or "interruption" in tweet.full_text) \
                     and tweet.entities.get(
-                "media"
+                        "media"
             ):
                 print(Fore.LIGHTBLUE_EX +
                       f"[!] Match found... @ {datetime.now().strftime('%H:%M:%S')}" + Style.RESET_ALL)
@@ -114,7 +107,8 @@ class TweetListener(ListenerBuilder):
         if isinstance(image_paths, list) and len(image_paths) > 0:
             for image_path in image_paths:
                 if image_path.endswith(".png") or image_path.endswith(".jpg") or image_path.endswith(".jpeg"):
-                    image = utils.preprocess_image(image_path, brightness=1.5, sharpness=2)
+                    image = utils.preprocess_image(
+                        image_path, brightness=1.5, sharpness=2)
                     image_text = pytesseract.image_to_string(image)
 
                     path_to_write: str = f"./image_texts/{image_path.split('/')[-1].split('.')[0]}.txt"
@@ -157,4 +151,5 @@ class TweetListener(ListenerBuilder):
 
 
 if __name__ == "__main__":
-    listener: ListenerBuilder = TweetListener(Authenticator(), max_id=None, since_id=None)
+    listener: ListenerBuilder = TweetListener(
+        Authenticator(), max_id=None, since_id=None)

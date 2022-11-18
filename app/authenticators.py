@@ -7,14 +7,25 @@ from confs.config import configs
 
 
 class AbstractAuthenticator(ABC):
-    def __init__(self):
+    """
+        Authentication Base class
+    """
+
+    def __init__(
+        self,
+        api_key: str = configs.API_KEY,
+        api_key_secret: str = configs.API_KEY_SECRET,
+        access_token: str = configs.ACCESS_TOKEN,
+        access_token_secret: str = configs.ACCESS_TOKEN_SECRET
+    ):
         self.status = False
         self.api = None
 
-        self.authenticate()
+        self.authenticate(api_key=api_key, api_key_secret=api_key_secret,
+                          access_token=access_token, access_token_secret=access_token_secret)
 
     @abstractmethod
-    def authenticate(self) -> tweepy.API:
+    def authenticate(self, api_key: str, api_key_secret: str, access_token: str, access_token_secret: str) -> None:
         """Handle tweepy authentication"""
 
     @property
@@ -28,14 +39,17 @@ class AbstractAuthenticator(ABC):
 
 
 class Authenticator(AbstractAuthenticator):
-    def __init__(self):
-        super(Authenticator, self).__init__()
-
-    def authenticate(self) -> None:
+    def authenticate(
+        self,
+        api_key: str = configs.API_KEY,
+        api_key_secret: str = configs.API_KEY_SECRET,
+        access_token: str = configs.ACCESS_TOKEN,
+        access_token_secret: str = configs.ACCESS_TOKEN_SECRET
+    ) -> None:
         try:
-            auth = tweepy.OAuthHandler(configs.API_KEY, configs.API_KEY_SECRET)
-            auth.set_access_token(configs.ACCESS_TOKEN,
-                                  configs.ACCESS_TOKEN_SECRET)
+            auth = tweepy.OAuthHandler(api_key, api_key_secret)
+            auth.set_access_token(access_token,
+                                  access_token_secret)
 
             self.api = tweepy.API(auth, wait_on_rate_limit=True)
 
@@ -46,13 +60,10 @@ class Authenticator(AbstractAuthenticator):
                   )
             self.status = True
 
-        except TypeError as error:
-            print(Fore.RED + Style.DIM +
-                  f'[-] Authentication failed with exception:\n\t {error}...' +
-                  Fore.RED + Style.DIM + "\nexiting" + Style.RESET_ALL
-                  )
-            sys.exit(0)
+        except tweepy.errors.Unauthorized as error:
+            raise Exception("Unauthorised credentials") from error
 
+    @property
     def authentication_status(self) -> bool:
         return self.status
 

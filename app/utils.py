@@ -1,3 +1,9 @@
+"""
+Utility functions applied to the dataframe for various actions
+including cleaning, extracting text, imputing null rows, writing to database, 
+and more.
+"""
+
 import sys
 from collections import OrderedDict
 from typing import Any, Optional
@@ -8,14 +14,8 @@ from PIL import Image, ImageEnhance
 sys.path.append(".")
 
 from confs.config import configs
-
 from .patterns import Patterns
 
-"""
-Utility functions applied to the dataframe for various actions
-including cleaning, extracting text, imputing null rows, writing to database, 
-and more. This class is not meant to be subclassed
-"""
 
 
 def extract_text(path: str) -> pd.DataFrame:
