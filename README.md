@@ -29,7 +29,6 @@ Quickly run the project using [docker](https://www.docker.com/) and
         -/api/
             __ini__.py
             auth.py
-            config.py
             database.py
             models.py
             schemas.py
@@ -38,8 +37,6 @@ Quickly run the project using [docker](https://www.docker.com/) and
         -/app/
             __init__.py
             authenticators.py
-            database.py
-            models.py
             patterns.py
             runner.py
             tweetListeners.py
@@ -84,3 +81,7 @@ Default configurations as shown below. Adjust accordingly
 | GET    |  /all/   | Get the previous 100 tracked records |
 | GET    |  /prev/  |   Get the previous 5 tracked records |
 | GET    |  /next/  |       Get the next 5 tracked records |
+
+
+#### Query Parameters
+

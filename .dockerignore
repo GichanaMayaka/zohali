@@ -1,7 +1,7 @@
 api/main.py
 api/playground.py
-app/images
-app/image_texts
+app/images/
+app/image_texts/
 
 **/__pycache__
 
