@@ -1,9 +1,10 @@
 from abc import ABC, abstractmethod
-from typing import Any
 
 import tweepy
 from colorama import Fore, Style
 from confs.config import configs
+
+from .exceptions import FailedToConnectException, InvalidCredentialsException
 
 
 class AbstractAuthenticator(ABC):
@@ -64,7 +65,10 @@ class Authenticator(AbstractAuthenticator):
             self.status = True
 
         except tweepy.errors.Unauthorized as error:
-            raise Exception("Unauthorised credentials") from error
+            raise InvalidCredentialsException("Unauthorised/Invalid credentials") from error
+
+        except tweepy.errors.TweepyException as error:
+            raise FailedToConnectException("Failed to Connect to the server[s]") from error
 
         except TypeError as error:
             raise Exception("Not a parser object") from error

@@ -70,8 +70,6 @@ class Runner:
                 "[!] Starting listener..." + Style.RESET_ALL
             )
 
-        return
-
 
 if __name__ == "__main__":
     runner: Runner = Runner()
