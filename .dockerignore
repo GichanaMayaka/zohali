@@ -3,7 +3,7 @@ api/playground.py
 app/images/
 app/image_texts/
 
-**/__pycache__
+**/__pycache__/*
 
 .env
 *.geojson

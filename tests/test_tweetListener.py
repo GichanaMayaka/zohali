@@ -5,7 +5,8 @@ from pytest import MonkeyPatch
 
 
 def test_fetch_tweet_valid() -> None:
-    assert isinstance(TweetListener(authenticator=Authenticator()).fetch_tweets(), list)
+    assert isinstance(TweetListener(
+        authenticator=Authenticator()).fetch_tweets(), list)
 
 
 def test_fetch_tweet_invalid(monkeypatch: MonkeyPatch) -> None:
@@ -21,16 +22,34 @@ def test_parse_tweets_invalid(monkeypatch: MonkeyPatch) -> None:
     monkeypatch.setattr(TweetListener, "fetch_tweets", lambda _: [])
     monkeypatch.setattr(Authenticator, "is_authenticated", lambda _: True)
 
-    assert len(
-        TweetListener(
-            authenticator=Authenticator()
-        ).parse_tweets(
-            tweets=TweetListener(
-                authenticator=Authenticator()
-            ).fetch_tweets())
-    ) < 1
+    listener = TweetListener(
+        authenticator=Authenticator()
+    )
+
+    assert len(listener.parse_tweets(tweets=listener.fetch_tweets())) < 1
 
 
 def test_parse_tweets_valid(monkeypatch: MonkeyPatch) -> None:
-    # TODO: Implement the valid test case
-    pass
+    monkeypatch.setattr(Authenticator, "is_authenticated", lambda _: True)
+
+    listener = TweetListener(authenticator=Authenticator())
+
+    with pytest.raises(FileNotFoundError) as exc_info:
+        assert len(listener.parse_tweets(tweets=listener.fetch_tweets())) >= 1
+
+
+def test_transform_valid(monkeypatch: MonkeyPatch) -> None:
+    monkeypatch.setattr(Authenticator, "is_authenticated", lambda _: True)
+
+    listener = TweetListener(authenticator=Authenticator())
+
+    with pytest.raises(FileNotFoundError):
+        assert len(listener.transform(["a.png"])) > 0
+
+
+def test_transform_invalid(monkeypatch: MonkeyPatch) -> None:
+    monkeypatch.setattr(Authenticator, "is_authenticated", lambda _: True)
+
+    listener = TweetListener(authenticator=Authenticator())
+
+    assert len(listener.transform([])) == 0

@@ -6,7 +6,7 @@ RUN chmod -R 755 /zohali
 
 COPY requirements.txt ./
 
-RUN apt-get -y update && apt-get install -y tesseract-ocr && apt install -y libtesseract-dev && apt-get install -y netcat
+RUN apt-get -y update && apt-get install -y tesseract-ocr
 
 RUN pip install -r requirements.txt
 
@@ -14,4 +14,4 @@ COPY . .
 
 RUN chmod +x init.sh
 
-ENTRYPOINT [ "sh", "init.sh"]
+ENTRYPOINT ["sh", "init.sh"]
