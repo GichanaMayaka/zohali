@@ -13,3 +13,7 @@ class FailedToConnectException(ZohaliBaseException):
 
 class InvalidCredentialsException(ZohaliBaseException):
     """Invalid API key[s]"""
+
+
+class FailedAuthenticationException(ZohaliBaseException):
+    """Failed authentication"""

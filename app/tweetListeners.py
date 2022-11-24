@@ -11,6 +11,7 @@ from confs.config import configs
 
 from . import utils
 from .authenticators import AbstractAuthenticator, Authenticator
+from .exceptions import FailedAuthenticationException
 
 
 class ListenerBuilder(ABC):
@@ -72,7 +73,7 @@ class TweetListener(ListenerBuilder):
                 self._since_id = max((tweet.id for tweet in tweets))
 
         else:
-            raise Exception("Authentication did not happen") from UnboundLocalError
+            raise FailedAuthenticationException("Authentication did not happen") from UnboundLocalError
 
         return tweets
 

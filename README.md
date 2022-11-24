@@ -37,6 +37,7 @@ Quickly run the project using [docker](https://www.docker.com/) and
         -/app/
             __init__.py
             authenticators.py
+            exceptions.py
             patterns.py
             runner.py
             tweetListeners.py
@@ -47,6 +48,7 @@ Quickly run the project using [docker](https://www.docker.com/) and
             __init__.py
             configs.py
         -/migrations/
+            ...
         -/data/
             db.sql
         -/tests/

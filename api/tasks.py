@@ -19,14 +19,11 @@ class BackgroundListener:
     def __init__(self):
         self.runner = Runner()
 
-    def build_project(self):
-        self.runner.build_project_structure()
-
     def get_tweets(self) -> pd.DataFrame:
         return self.runner.fetcher()
 
     async def run_listener(self):
-        self.build_project()
+        self.runner.build_project_structure()
 
         while True:
             data = self.get_tweets()
