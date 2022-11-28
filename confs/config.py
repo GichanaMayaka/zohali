@@ -32,15 +32,10 @@ class dev_configs(BaseSettings):
 class prod_configs(dev_configs):
     pass
 
-    class Config:
-        env_file = ".env"
-
 
 class test_configs(dev_configs):
     pass
 
-    class Config:
-        env_file = ".env"
 
 class ConfigFactory:
     """Inject configuration according to environment at runtime"""

@@ -1,9 +1,6 @@
 import asyncio
-import sys
 
 import pandas as pd
-
-sys.path.append(".")
 from app import utils
 from app.runner import Runner
 from confs.config import configs
@@ -16,7 +13,8 @@ class BackgroundListener:
         Run the task that fetches and parses tweets in the background asynchronously
     """
 
-    def __init__(self):
+    def __init__(self, save_to_database: bool = False):
+        self.save_to_database = save_to_database
         self.runner = Runner()
 
     def get_tweets(self) -> pd.DataFrame:
@@ -27,7 +25,8 @@ class BackgroundListener:
 
         while True:
             data = self.get_tweets()
-            utils.save(data=data, connection_engine=engine)
+            if self.save_to_database:
+                utils.save(data=data, connection_engine=engine)
             await asyncio.sleep(configs.TIMEOUT)
 
 

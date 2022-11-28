@@ -83,7 +83,7 @@ Default configurations as shown below. Adjust accordingly
 ### Endpoints
 
 | METHOD | ENDPOINT |                          DESCRIPTION |
-| ------ | :------: | -----------------------------------: |
+|--------|:--------:|-------------------------------------:|
 | GET    |  /all/   | Get the previous 100 tracked records |
 | GET    |  /prev/  |   Get the previous 5 tracked records |
 | GET    |  /next/  |       Get the next 5 tracked records |

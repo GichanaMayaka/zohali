@@ -1,9 +1,9 @@
 import random
 from abc import ABC, abstractmethod
-from datetime import datetime
 from typing import Any, List, Optional
 
 import pandas as pd
+import pendulum
 import pytesseract
 import requests
 from colorama import Fore, Style
@@ -87,7 +87,7 @@ class TweetListener(ListenerBuilder):
                         "media"
             ):
                 print(Fore.LIGHTBLUE_EX +
-                      f"[!] Match found... @ {datetime.now().strftime('%H:%M:%S')}" + Style.RESET_ALL)
+                      f"[!] Match found... @ {pendulum.now().format('H:mm:ss')}" + Style.RESET_ALL)
 
                 for media in tweet.extended_entities.get("media"):
                     image_data: bytes = requests.get(
