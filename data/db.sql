@@ -1,1 +1,1 @@
-CREATE DATABASE zohali
+CREATE DATABASE zohali;

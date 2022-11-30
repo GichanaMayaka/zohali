@@ -23,9 +23,6 @@ class ResponseOut(BaseModel):
 
     class Config:
         orm_mode = True
-        json_encoders = {
-            datetime.datetime: lambda t: t.timestamp()
-        }
 
 
 class ResponseOutWithStats(BaseModel):

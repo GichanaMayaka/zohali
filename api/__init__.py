@@ -1,13 +1,12 @@
 import asyncio
 
-from fastapi import FastAPI, Path, status
+from fastapi import FastAPI, status
 
 from .database import engine
+from .middleware import allow_request_origins
+from .models import Base
 from .routes import all, stepwise
 from .tasks import BackgroundListener
-from .models import Base
-from .middleware import allow_request_origins
-
 
 app = FastAPI()
 app = allow_request_origins(app=app)
@@ -21,15 +20,14 @@ async def run_background_listener():
     """
         Runs background listener on startup
     """
-    runner = BackgroundListener()
+
+    runner = BackgroundListener(save_to_database=False)
     Base.metadata.create_all(bind=engine)
     asyncio.create_task(runner.run_listener())
 
 
-@app.get("/{name}", status_code=status.HTTP_200_OK, tags=["Index"])
-async def index(
-    name: str = Path(default=None, regex=r"[a-zA-Z]", min_length=1),
-):
+@app.get("/", status_code=status.HTTP_200_OK, tags=["Index"])
+async def index():
     return {
-        'message': f"Welcome, {name.capitalize()}"
+        'message': "Welcome, to Zohali (https://github.com/GichanaMayaka/zohali)"
     }

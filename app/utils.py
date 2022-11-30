@@ -4,18 +4,14 @@ including cleaning, extracting text, imputing null rows, writing to database,
 and more.
 """
 
-import sys
 from collections import OrderedDict
 from typing import Any, Optional
 
 import pandas as pd
 from PIL import Image, ImageEnhance
-
-sys.path.append(".")
-
 from confs.config import configs
-from .patterns import Patterns
 
+from .patterns import Patterns
 
 
 def extract_text(path: str) -> pd.DataFrame:
