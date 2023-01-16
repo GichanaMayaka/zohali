@@ -15,7 +15,7 @@ router = APIRouter(tags=["All Scheduled Maintenance"])
             response_model_exclude_none=True)
 def get_all_scheduled_maintenance(
         db: Session = Depends(get_db),
-        count: Optional[int] = Query(default=100, gt=0),
+        count: Optional[int] = Query(default=10, gt=0),
         region: Optional[str] = Query(default=None, regex=r"[a-zA-Z]"),
         area: Optional[str] = Query(default=None, regex=r"[a-zA-Z]"),
         place: Optional[str] = Query(default=None, regex=r"[a-zA-Z]"),

@@ -20,6 +20,7 @@ class ResponseOut(BaseModel):
     county: Optional[str]
     area: Optional[list[str]]
     time: Optional[str]
+    places: Optional[list]
 
     class Config:
         orm_mode = True
