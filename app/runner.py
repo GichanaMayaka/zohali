@@ -23,9 +23,11 @@ class Runner:
         tweets: list = self.tweet_listener.fetch_tweets()
         image_paths: list = self.tweet_listener.parse_tweets(tweets=tweets)
         text_paths: list = self.tweet_listener.transform(
-            image_paths=image_paths)
+            image_paths=image_paths
+        )
         data: pd.DataFrame = self.tweet_listener.tablify(
-            text_file_paths=text_paths)
+            text_file_paths=text_paths
+        )
 
         return data
 
@@ -43,7 +45,7 @@ class Runner:
                 os.chdir("D:/Projects/zohali/app")
 
             elif platform.platform().startswith("Linux"):
-                os.chdir("/zohali/app")
+                os.chdir("./app")
 
             print(Fore.LIGHTCYAN_EX + "[!] Attempting to create app folders.")
 

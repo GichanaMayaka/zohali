@@ -11,7 +11,8 @@
       "protocolProfileBehavior": {
         "disableBodyPruning": true
       },
-      "request": {
+      "request": {b v23
+      
         "auth": {
           "type": "bearer"
         },
@@ -27,33 +28,29 @@
           }
         },
         "url": {
-          "raw": "{{host}}/all/?count=15",
+          "raw": "{{host}}/all/?count=150&region=coast&county=kilifi&area=a&place=e",
           "host": ["{{host}}"],
           "path": ["all", ""],
           "query": [
             {
               "key": "count",
-              "value": "15"
+              "value": "150"
             },
             {
               "key": "region",
-              "value": "coast",
-              "disabled": true
+              "value": "coast"
             },
             {
               "key": "county",
-              "value": "kilifi",
-              "disabled": true
+              "value": "kilifi"
             },
             {
               "key": "area",
-              "value": "taita",
-              "disabled": true
+              "value": "a"
             },
             {
               "key": "place",
-              "value": "tana",
-              "disabled": true
+              "value": "e"
             }
           ]
         }
@@ -120,7 +117,7 @@
             },
             {
               "key": "county",
-              "value": "nairobi",
+              "value": "kaj",
               "disabled": true
             },
             {

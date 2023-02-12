@@ -25,6 +25,9 @@ class dev_configs(BaseSettings):
     POSTGRES_PORT: Final[int] = 5432
     POSTGRES_DATABASE_NAME: Final[str]
 
+    # Tesseract-OCR path
+    TESSDATA_PREFIX: Final[str]
+
     class Config:
         env_file = ".env"
 
