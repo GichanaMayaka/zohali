@@ -1,12 +1,34 @@
-## Project Zohali (Saturn)
+# Project Zohali (Saturn)
 
 This is an API that consumes [Kenya Power's](https://twitter.com/KenyaPower_Care) Tweets to check for scheduled/planned maintenance in Kenya.
 Information extracted includes the Region, County, Area, Specific places, time as well as date of the planned incidents.
 This API, consequently, makes the information publicly searchable, and analysable.
 
-### Getting Started
+## Getting Started
 
-Quickly run the project using [docker](https://www.docker.com/) and
+### Configuration
+
+First, supply a .env file that will hold all configuration details to the application's root directory. Ensure all options and tokens are supplied as shown below (keys and tokens are generated from Twitter)
+
+    ENCODING: = "utf-8"
+    API_KEY:
+    API_KEY_SECRET:
+    BEARER_TOKEN:
+    ACCESS_TOKEN:
+    ACCESS_TOKEN_SECRET:
+    SCREEN_NAME: = "KenyaPower_Care"
+    TWEET_MODE: = "extended"
+    TWEETS_COUNT: = 1500
+    EXCLUDE_REPLIES: = True
+    INCLUDE_RETWEETS: = False
+    TIMEOUT: = 120
+    POSTGRES_HOSTNAME:
+    POSTGRES_USER:
+    POSTGRES_PASSWORD:
+    POSTGRES_PORT: = 5432
+    POSTGRES_DATABASE_NAME:
+
+Once all requisite configuration details are supplied accordingly, quickly run the project using [docker](https://www.docker.com/) and
 [docker-compose](https://docs.docker.com/compose/):
 
 ```bash
@@ -57,28 +79,6 @@ Quickly run the project using [docker](https://www.docker.com/) and
             test_tweet_listener.py
         -/postman collection/
             zohali.postman_collection.json
-
-### Configuration
-
-Default configurations as shown below. Adjust accordingly
-
-    ENCODING: = "utf-8"
-    API_KEY:
-    API_KEY_SECRET:
-    BEARER_TOKEN:
-    ACCESS_TOKEN:
-    ACCESS_TOKEN_SECRET:
-    SCREEN_NAME: = "KenyaPower_Care"
-    TWEET_MODE: = "extended"
-    TWEETS_COUNT: = 1500
-    EXCLUDE_REPLIES: = True
-    INCLUDE_RETWEETS: = False
-    TIMEOUT: = 120
-    POSTGRES_HOSTNAME:
-    POSTGRES_USER:
-    POSTGRES_PASSWORD:
-    POSTGRES_PORT: = 5432
-    POSTGRES_DATABASE_NAME:
 
 ### Endpoints
 

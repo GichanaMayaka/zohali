@@ -21,7 +21,7 @@ async def run_background_listener():
         Runs background listener on startup
     """
 
-    runner = BackgroundListener(save_to_database=False)
+    runner = BackgroundListener(save_to_database=True)
     Base.metadata.create_all(bind=engine)
     asyncio.create_task(runner.run_listener())
 
