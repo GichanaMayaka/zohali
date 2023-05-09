@@ -1,6 +1,7 @@
 # Project Zohali (Saturn)
 
-This is an API that consumes [Kenya Power's](https://twitter.com/KenyaPower_Care) Tweets to check for scheduled/planned maintenance in Kenya.
+This is an API that consumes [Kenya Power's](https://twitter.com/KenyaPower_Care) Tweets to check for scheduled/planned
+maintenance in Kenya.
 Information extracted includes the Region, County, Area, Specific places, time as well as date of the planned incidents.
 This API, consequently, makes the information publicly searchable, and analysable.
 
@@ -8,7 +9,8 @@ This API, consequently, makes the information publicly searchable, and analysabl
 
 ### Configuration
 
-First, supply a .env file that will hold all configuration details to the application's root directory. Ensure all options and tokens are supplied as shown below (keys and tokens are generated from Twitter)
+First, supply a .env file that will hold all configuration details to the application's root directory. Ensure all
+options and tokens are supplied as shown below (keys and tokens are generated from Twitter)
 
     ENCODING: = "utf-8"
     API_KEY:
@@ -28,7 +30,8 @@ First, supply a .env file that will hold all configuration details to the applic
     POSTGRES_PORT: = 5432
     POSTGRES_DATABASE_NAME:
 
-Once all requisite configuration details are supplied accordingly, quickly run the project using [docker](https://www.docker.com/) and
+Once all requisite configuration details are supplied accordingly, quickly run the project
+using [docker](https://www.docker.com/) and
 [docker-compose](https://docs.docker.com/compose/):
 
 ```bash
@@ -82,12 +85,7 @@ Once all requisite configuration details are supplied accordingly, quickly run t
 
 ### Endpoints
 
-| METHOD | ENDPOINT |                          DESCRIPTION |
-|--------|:--------:|-------------------------------------:|
-| GET    |  /all/   | Get the previous 100 tracked records |
-| GET    |  /prev/  |   Get the previous 5 tracked records |
-| GET    |  /next/  |       Get the next 5 tracked records |
-
-
-#### Query Parameters
+All endpoints can be accessed through _**localhost:8000/docs**_ which is powered
+by [Swagger UI](https://swagger.io/tools/swagger-ui/) as previewed below:
+![Screenshot](./docs/images/swagger-preview.jpg)
 
