@@ -12,23 +12,26 @@ This API, consequently, makes the information publicly searchable, and analysabl
 First, supply a .env file that will hold all configuration details to the application's root directory. Ensure all
 options and tokens are supplied as shown below (keys and tokens are generated from Twitter)
 
-    ENCODING: = "utf-8"
-    API_KEY:
-    API_KEY_SECRET:
-    BEARER_TOKEN:
-    ACCESS_TOKEN:
-    ACCESS_TOKEN_SECRET:
-    SCREEN_NAME: = "KenyaPower_Care"
-    TWEET_MODE: = "extended"
-    TWEETS_COUNT: = 1500
-    EXCLUDE_REPLIES: = True
-    INCLUDE_RETWEETS: = False
-    TIMEOUT: = 120
-    POSTGRES_HOSTNAME:
-    POSTGRES_USER:
-    POSTGRES_PASSWORD:
-    POSTGRES_PORT: = 5432
-    POSTGRES_DATABASE_NAME:
+    ENCODING = "utf-8"
+    API_KEY =
+    API_KEY_SECRET =
+    BEARER_TOKEN =
+    ACCESS_TOKEN =
+    ACCESS_TOKEN_SECRET =
+    SCREEN_NAME = "KenyaPower_Care"
+    TWEET_MODE = "extended"
+    TWEETS_COUNT = 1500
+    EXCLUDE_REPLIES = True
+    INCLUDE_RETWEETS = False
+    TIMEOUT = 120
+    POSTGRES_HOSTNAME =
+    POSTGRES_USER =
+    POSTGRES_PASSWORD =
+    POSTGRES_PORT = 5432
+    POSTGRES_DATABASE_NAME =
+
+If running on Windows, remember to download and install [Tesseract-OCR](https://github.com/tesseract-ocr/tesseract) and
+ensure the path is included.
 
 Once all requisite configuration details are supplied accordingly, quickly run the project
 using [docker](https://www.docker.com/) and
@@ -36,6 +39,21 @@ using [docker](https://www.docker.com/) and
 
 ```bash
     $ docker-compose up -d
+```
+
+If docker is not available, you can run locally by activating the virtualenv as below, if on Windows
+
+```bash
+    $ venv\Scripts\activate
+    $ python serve.py
+```
+
+or if on Linux
+
+```bash
+    $ chmod +x init.sh
+    $ source/scripts/activate
+    $ init.sh
 ```
 
 ### Directory Structure:
