@@ -56,6 +56,12 @@ or if on Linux
     $ init.sh
 ```
 
+### Endpoints
+
+All endpoints can be accessed through _**localhost:8000/docs**_ which is powered
+by [Swagger UI](https://swagger.io/tools/swagger-ui/) as previewed below:
+![Screenshot](./docs/images/swagger-preview.jpg)
+
 ### Directory Structure:
 
     -/zohali/
@@ -100,10 +106,4 @@ or if on Linux
             test_tweet_listener.py
         -/postman collection/
             zohali.postman_collection.json
-
-### Endpoints
-
-All endpoints can be accessed through _**localhost:8000/docs**_ which is powered
-by [Swagger UI](https://swagger.io/tools/swagger-ui/) as previewed below:
-![Screenshot](./docs/images/swagger-preview.jpg)
 
