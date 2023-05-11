@@ -30,8 +30,7 @@ options and tokens are supplied as shown below (keys and tokens are generated fr
     POSTGRES_PORT = 5432
     POSTGRES_DATABASE_NAME =
 
-If running on Windows, remember to download and install [Tesseract-OCR](https://github.com/tesseract-ocr/tesseract) and
-ensure the path is included.
+The application requires [Tesseract-OCR](https://github.com/tesseract-ocr/tesseract) to be installed and present in the path. Please review the Tesseract-OCR documentation for directions on how to configure for your environment.
 
 Once all requisite configuration details are supplied accordingly, quickly run the project
 using [docker](https://www.docker.com/) and
