@@ -1,7 +1,7 @@
 import os
 from typing import Final
 
-from pydantic import BaseSettings
+from pydantic import BaseSettings, PostgresDsn
 
 
 class dev_configs(BaseSettings):
@@ -19,11 +19,7 @@ class dev_configs(BaseSettings):
     TIMEOUT: Final[int] = 120
 
     # Database connection parameters
-    POSTGRES_HOSTNAME: Final[str]
-    POSTGRES_USER: Final[str]
-    POSTGRES_PASSWORD: Final[str]
-    POSTGRES_PORT: Final[int] = 5432
-    POSTGRES_DATABASE_NAME: Final[str]
+    POSTGRES_DNS: Final[PostgresDsn]
 
     # Tesseract-OCR path
     TESSDATA_PREFIX: Final[str]
