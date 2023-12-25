@@ -9,24 +9,34 @@ from .exceptions import FailedToConnectException, InvalidCredentialsException
 
 class AbstractAuthenticator(ABC):
     """
-        Authentication Base class
+    Authentication Base class
     """
 
     def __init__(
-        self,
-        api_key: str = configs.API_KEY,
-        api_key_secret: str = configs.API_KEY_SECRET,
-        access_token: str = configs.ACCESS_TOKEN,
-        access_token_secret: str = configs.ACCESS_TOKEN_SECRET
+            self,
+            api_key: str = configs.API_KEY,
+            api_key_secret: str = configs.API_KEY_SECRET,
+            access_token: str = configs.ACCESS_TOKEN,
+            access_token_secret: str = configs.ACCESS_TOKEN_SECRET,
     ):
         self.status = False
         self.api = None
 
-        self.authenticate(api_key=api_key, api_key_secret=api_key_secret,
-                          access_token=access_token, access_token_secret=access_token_secret)
+        self.authenticate(
+            api_key=api_key,
+            api_key_secret=api_key_secret,
+            access_token=access_token,
+            access_token_secret=access_token_secret,
+        )
 
     @abstractmethod
-    def authenticate(self, api_key: str, api_key_secret: str, access_token: str, access_token_secret: str) -> None:
+    def authenticate(
+            self,
+            api_key: str,
+            api_key_secret: str,
+            access_token: str,
+            access_token_secret: str,
+    ) -> None:
         """Handle tweepy authentication"""
 
     @property
@@ -41,17 +51,17 @@ class AbstractAuthenticator(ABC):
 
 class Authenticator(AbstractAuthenticator):
     def authenticate(
-        self,
-        api_key: str = configs.API_KEY,
-        api_key_secret: str = configs.API_KEY_SECRET,
-        access_token: str = configs.ACCESS_TOKEN,
-        access_token_secret: str = configs.ACCESS_TOKEN_SECRET
+            self,
+            api_key: str = configs.API_KEY,
+            api_key_secret: str = configs.API_KEY_SECRET,
+            access_token: str = configs.ACCESS_TOKEN,
+            access_token_secret: str = configs.ACCESS_TOKEN_SECRET,
     ) -> None:
         auth_handler = tweepy.OAuth1UserHandler(
             consumer_key=api_key,
             consumer_secret=api_key_secret,
             access_token=access_token,
-            access_token_secret=access_token_secret
+            access_token_secret=access_token_secret,
         )
 
         try:
@@ -59,16 +69,23 @@ class Authenticator(AbstractAuthenticator):
 
             self.api.verify_credentials()
 
-            print(Fore.LIGHTBLUE_EX + Style.BRIGHT +
-                  '[+] Authenticated successfully.' + Style.RESET_ALL
-                  )
+            print(
+                Fore.LIGHTBLUE_EX
+                + Style.BRIGHT
+                + "[+] Authenticated successfully."
+                + Style.RESET_ALL
+            )
             self.status = True
 
         except tweepy.errors.Unauthorized as error:
-            raise InvalidCredentialsException("Unauthorised/Invalid credentials") from error
+            raise InvalidCredentialsException(
+                "Unauthorised/Invalid credentials"
+            ) from error
 
         except tweepy.errors.TweepyException as error:
-            raise FailedToConnectException("Failed to Connect to the server[s]") from error
+            raise FailedToConnectException(
+                "Failed to Connect to the server[s]"
+            ) from error
 
         except TypeError as error:
             raise Exception("Not a parser object") from error

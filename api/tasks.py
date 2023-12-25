@@ -10,7 +10,7 @@ from .database import engine
 
 class BackgroundListener:
     """
-        Run the task that fetches and parses tweets in the background asynchronously
+    Run the task that fetches and parses tweets in the background asynchronously
     """
 
     def __init__(self, save_to_database: bool = False):

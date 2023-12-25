@@ -18,25 +18,20 @@ class Runner:
 
     def fetcher(self) -> pd.DataFrame:
         """
-            fetch tweets and parse them into a pandas dataframe
+        fetch tweets and parse them into a pandas dataframe
         """
         tweets: list = self.tweet_listener.fetch_tweets()
         image_paths: list = self.tweet_listener.parse_tweets(tweets=tweets)
-        text_paths: list = self.tweet_listener.transform(
-            image_paths=image_paths
-        )
-        data: pd.DataFrame = self.tweet_listener.tablify(
-            text_file_paths=text_paths
-        )
+        text_paths: list = self.tweet_listener.transform(image_paths=image_paths)
+        data: pd.DataFrame = self.tweet_listener.tablify(text_file_paths=text_paths)
 
         return data
 
     def build_project_structure(self) -> None:
         """
-            Build project's directory structure
+        Build project's directory structure
         """
-        print(Fore.GREEN + Style.BRIGHT +
-              "[+] Building listener..." + Style.RESET_ALL)
+        print(Fore.GREEN + Style.BRIGHT + "[+] Building listener..." + Style.RESET_ALL)
 
         try:
             if platform.platform().startswith("Windows"):
@@ -55,22 +50,21 @@ class Runner:
 
         except FileNotFoundError:
             print(
-                Fore.LIGHTRED_EX +
-                "[-] Cannot create application folders. Exiting" + Style.RESET_ALL
+                Fore.LIGHTRED_EX
+                + "[-] Cannot create application folders. Exiting"
+                + Style.RESET_ALL
             )
             sys.exit(-1)
 
         except FileExistsError:
             print(
-                Fore.LIGHTMAGENTA_EX +
-                "[!] App folders already exist! Continuing" + Style.RESET_ALL
+                Fore.LIGHTMAGENTA_EX
+                + "[!] App folders already exist! Continuing"
+                + Style.RESET_ALL
             )
 
         finally:
-            print(
-                Fore.LIGHTMAGENTA_EX +
-                "[!] Starting listener..." + Style.RESET_ALL
-            )
+            print(Fore.LIGHTMAGENTA_EX + "[!] Starting listener..." + Style.RESET_ALL)
 
 
 if __name__ == "__main__":

@@ -1,5 +1,7 @@
 # Project Zohali (Saturn)
 
+**NOTE: Requires a subscription to X's, formerly Twitter, [Basic or higher APIs](https://developer.twitter.com/en/products/twitter-api) to use.**
+
 This is an API that consumes [Kenya Power's](https://twitter.com/KenyaPower_Care) Tweets to check for scheduled/planned
 maintenance in Kenya.
 Information extracted includes the Region, County, Area, Specific places, time as well as date of the planned incidents.
@@ -105,4 +107,3 @@ by [Swagger UI](https://swagger.io/tools/swagger-ui/) as previewed below:
             test_tweet_listener.py
         -/postman collection/
             zohali.postman_collection.json
-

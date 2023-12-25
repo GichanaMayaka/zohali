@@ -16,17 +16,20 @@ from .exceptions import FailedAuthenticationException
 
 class ListenerBuilder(ABC):
     """
-        Abstract base class defining the listener's contract.
-        This class contains methods to authenticate, fetch relevant tweets, parse the tweets,
-        transform parsed tweet texts, and convert them into a pandas dataframe for easy manipulation
-        downstream.
-        Constructor params include the max_id, since_id, and the authentication method to use which has been
-        implemented in the Authenticator class
+    Abstract base class defining the listener's contract.
+    This class contains methods to authenticate, fetch relevant tweets, parse the tweets,
+    transform parsed tweet texts, and convert them into a pandas dataframe for easy manipulation
+    downstream.
+    Constructor params include the max_id, since_id, and the authentication method to use which has been
+    implemented in the Authenticator class
     """
 
-    def __init__(self, authenticator: AbstractAuthenticator, max_id: Optional[int] = None,
-                 since_id: Optional[int] = None,
-                 ):
+    def __init__(
+            self,
+            authenticator: AbstractAuthenticator,
+            max_id: Optional[int] = None,
+            since_id: Optional[int] = None,
+    ):
         self._max_id = max_id
         self._since_id = since_id
         self._encoding = configs.ENCODING
@@ -52,10 +55,13 @@ class ListenerBuilder(ABC):
 
 
 class TweetListener(ListenerBuilder):
-    def __init__(self, authenticator: AbstractAuthenticator, max_id: Optional[int] = None,
-                 since_id: Optional[int] = None):
-        super(TweetListener, self).__init__(max_id=max_id,
-                                            since_id=since_id, authenticator=authenticator)
+    def __init__(
+            self,
+            authenticator: AbstractAuthenticator,
+            max_id: Optional[int] = None,
+            since_id: Optional[int] = None,
+    ):
+        super().__init__(max_id=max_id, since_id=since_id, authenticator=authenticator)
 
     def fetch_tweets(self) -> Optional[List[Any]]:
         if self._is_authenticated:
@@ -66,14 +72,16 @@ class TweetListener(ListenerBuilder):
                 tweet_mode=configs.TWEET_MODE,
                 count=configs.TWEETS_COUNT,
                 exclude_replies=configs.EXCLUDE_REPLIES,
-                include_rts=configs.INCLUDE_RETWEETS
+                include_rts=configs.INCLUDE_RETWEETS,
             )
 
             if len(tweets) > 0:
                 self._since_id = max((tweet.id for tweet in tweets))
 
         else:
-            raise FailedAuthenticationException("Authentication did not happen") from UnboundLocalError
+            raise FailedAuthenticationException(
+                "Authentication did not happen"
+            ) from UnboundLocalError
 
         return tweets
 
@@ -82,12 +90,16 @@ class TweetListener(ListenerBuilder):
 
         for tweet in tweets:
             if (
-                    "scheduled" in tweet.full_text or "planned" in tweet.full_text or "maintenance" in tweet.full_text or "interruption" in tweet.full_text) \
-                    and tweet.entities.get(
-                        "media"
-            ):
-                print(Fore.LIGHTBLUE_EX +
-                      f"[!] Match found... @ {pendulum.now().format('H:mm:ss')}" + Style.RESET_ALL)
+                    "scheduled" in tweet.full_text
+                    or "planned" in tweet.full_text
+                    or "maintenance" in tweet.full_text
+                    or "interruption" in tweet.full_text
+            ) and tweet.entities.get("media"):
+                print(
+                    Fore.LIGHTBLUE_EX
+                    + f"[!] Match found... @ {pendulum.now().format('H:mm:ss')}"
+                    + Style.RESET_ALL
+                )
 
                 for media in tweet.extended_entities.get("media"):
                     image_data: bytes = requests.get(
@@ -96,12 +108,13 @@ class TweetListener(ListenerBuilder):
 
                     path_to_write: str = f"./images/image_{tweet.created_at.strftime('%Y%m%d_%H%M%S')}_{random.randint(1, 1000)}_{tweet.id}.png"
                     with open(path_to_write, "wb") as img:
-                        print(Fore.LIGHTBLUE_EX +
-                              f"[!] Writing image to {path_to_write}" + Style.RESET_ALL)
-                        img.write(image_data)
-                        image_paths.append(
-                            path_to_write
+                        print(
+                            Fore.LIGHTBLUE_EX
+                            + f"[!] Writing image to {path_to_write}"
+                            + Style.RESET_ALL
                         )
+                        img.write(image_data)
+                        image_paths.append(path_to_write)
 
         return image_paths
 
@@ -110,19 +123,27 @@ class TweetListener(ListenerBuilder):
 
         if isinstance(image_paths, list) and len(image_paths) > 0:
             for image_path in image_paths:
-                if image_path.endswith(".png") or image_path.endswith(".jpg") or image_path.endswith(".jpeg"):
+                if (
+                        image_path.endswith(".png")
+                        or image_path.endswith(".jpg")
+                        or image_path.endswith(".jpeg")
+                ):
                     image = utils.preprocess_image(
-                        image_path, brightness=1.5, sharpness=2)
+                        image_path, brightness=1.5, sharpness=2
+                    )
                     image_text = pytesseract.image_to_string(image)
 
-                    path_to_write: str = f"./image_texts/{image_path.split('/')[-1].split('.')[0]}.txt"
+                    path_to_write: str = (
+                        f"./image_texts/{image_path.split('/')[-1].split('.')[0]}.txt"
+                    )
                     with open(path_to_write, "w", encoding=self._encoding) as file:
                         print(
-                            Fore.LIGHTBLUE_EX + f"[!] Writing text to: {path_to_write}" + Style.RESET_ALL)
-                        file.write(image_text)
-                        text_paths.append(
-                            path_to_write
+                            Fore.LIGHTBLUE_EX
+                            + f"[!] Writing text to: {path_to_write}"
+                            + Style.RESET_ALL
                         )
+                        file.write(image_text)
+                        text_paths.append(path_to_write)
 
         else:
             print("[!] No tweet[s] fetched. Listening...")
@@ -133,14 +154,19 @@ class TweetListener(ListenerBuilder):
         """Build a dataframe from the data parsed from the tweets"""
 
         columns = [
-            "region", "area", "places", "time", "date",
-            "county", "start_time", "end_time", "file_path",
-            "tweet_id"
+            "region",
+            "area",
+            "places",
+            "time",
+            "date",
+            "county",
+            "start_time",
+            "end_time",
+            "file_path",
+            "tweet_id",
         ]
 
-        data = pd.DataFrame(
-            columns=columns
-        )
+        data = pd.DataFrame(columns=columns)
 
         if isinstance(text_file_paths, list) and len(text_file_paths) > 0:
             for text_file_path in text_file_paths:
@@ -156,4 +182,5 @@ class TweetListener(ListenerBuilder):
 
 if __name__ == "__main__":
     listener: ListenerBuilder = TweetListener(
-        Authenticator(), max_id=None, since_id=None)
+        Authenticator(), max_id=None, since_id=None
+    )

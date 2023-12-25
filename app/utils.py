@@ -16,22 +16,21 @@ from .patterns import Patterns
 
 def extract_text(path: str) -> pd.DataFrame:
     """
-        Actual workhorse method. Matches patterns, and extracts the matched information into a dataframe
+    Actual workhorse method. Matches patterns, and extracts the matched information into a dataframe
     """
 
     with open(path, "r", encoding=configs.ENCODING) as f:
         string = " ".join([line.rstrip() for line in f.readlines()])
-        string = string.lower().replace(
-            "mr.", "Mr").replace(
-            "st.", "St").replace(
-            "mt.", "Mt"
+        string = (
+            string.lower()
+            .replace("mr.", "Mr")
+            .replace("st.", "St")
+            .replace("mt.", "Mt")
         )
 
     info = {}
 
-    region, county, place, date, time, area = match_patterns(
-        string
-    )
+    region, county, place, date, time, area = match_patterns(string)
 
     for match in region:
         info[match.span()] = {"region": match.captures()[0]}
@@ -65,15 +64,11 @@ def extract_text(path: str) -> pd.DataFrame:
     if "county" in data.columns:
         data.county = data.county.str.lstrip()
         data.county = data.apply(county_cleaner, axis=1)
-        data.county = data.county.str.replace(
-            pat=r"\d", repl="", regex=True
-        )
+        data.county = data.county.str.replace(pat=r"\d", repl="", regex=True)
 
     if "region" in data.columns:
         data.region = data.apply(region_cleaner, axis=1)
-        data.region = data.region.str.replace(
-            pat=r"\d", repl="", regex=True
-        )
+        data.region = data.region.str.replace(pat=r"\d", repl="", regex=True)
         data.region = data.region.str.lstrip()
 
     if "area" in data.columns:
@@ -87,7 +82,7 @@ def extract_text(path: str) -> pd.DataFrame:
 
 def match_patterns(string: str) -> tuple[Any, Any, Any, Any, Any, Any]:
     """
-        Match the patterns on input string
+    Match the patterns on input string
     """
     region = Patterns.REGIONS.finditer(string)
     county = Patterns.COUNTY.finditer(string)
@@ -99,12 +94,16 @@ def match_patterns(string: str) -> tuple[Any, Any, Any, Any, Any, Any]:
     return region, county, place, date, time, area
 
 
-def preprocess_image(image_path: str, brightness: float = 1.5, sharpness: float = 2) -> Optional[Image.Image]:
+def preprocess_image(
+    image_path: str, brightness: float = 1.5, sharpness: float = 2
+) -> Optional[Image.Image]:
     """
-        Resize, and threshold image, brighten, and sharpen in order to increase OCR accuracy
+    Resize, and threshold image, brighten, and sharpen in order to increase OCR accuracy
     """
     img = Image.open(image_path).convert("L")
-    img = img.resize([2 * _ for _ in img.size], Image.Resampling.BICUBIC).point(lambda p: p > 75 and p + 100)
+    img = img.resize([2 * _ for _ in img.size], Image.Resampling.BICUBIC).point(
+        lambda p: p > 75 and p + 100
+    )
     enhancer = ImageEnhance.Brightness(img)
     image = enhancer.enhance(brightness)
     sharper = ImageEnhance.Sharpness(image=image)
@@ -115,7 +114,7 @@ def preprocess_image(image_path: str, brightness: float = 1.5, sharpness: float 
 
 def fill_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     """
-        The trick method... Impute missing rows
+    The trick method... Impute missing rows
     """
 
     if df.name == "area" or df.name == "county" or df.name == "region":
@@ -156,7 +155,11 @@ def region_cleaner(df: pd.DataFrame) -> pd.Series:
         return df.region
 
 
-def save(data: pd.DataFrame, connection_engine: Any, table_name: str = "maintenance_schedule") -> Optional[int]:
+def save(
+    data: pd.DataFrame, connection_engine: Any, table_name: str = "maintenance_schedule"
+) -> Optional[int]:
     """Write the dataframe to database appending at the end"""
 
-    return data.to_sql(name=table_name, con=connection_engine, if_exists="append", index=False)
+    return data.to_sql(
+        name=table_name, con=connection_engine, if_exists="append", index=False
+    )
